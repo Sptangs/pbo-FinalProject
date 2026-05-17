@@ -5,10 +5,13 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class UserManagementView extends JFrame {
     private JTextField txtName, txtEmail, txtAlamat;
     private JButton btnAdd, btnUpdate, btnDelete, btnClear;
+    private JTable table;
+    private DefaultTableModel tableModel;
 
     public UserManagementView() {
         setTitle("Manajemen User - CariKerja");
@@ -29,7 +32,6 @@ public class UserManagementView extends JFrame {
         txtAlamat = new JTextField();
         formPanel.add(txtAlamat);
 
-
         //panel tengah
         JPanel buttonPanel = new JPanel(new FlowLayout());
         btnAdd = new JButton("Tambah");
@@ -41,11 +43,27 @@ public class UserManagementView extends JFrame {
         buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear);
 
+        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "Email", "Alamat"}, 0);
+        table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.SOUTH);
+
         add(formPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.CENTER);
 
         setVisible(true);
     }
+
+    //getter controller
+    public JTextField getTxtName() { return txtName; }
+    public JTextField getTxtEmail() { return txtEmail; }
+    public JTextField getTxtAlamat() { return txtAlamat; }
+    public JButton geBtnAdd() { return btnAdd; }
+    public JButton geBtnUpdate() { return btnUpdate; }
+    public JButton geBtnDelete() { return btnDelete; }
+    public JButton geBtnCLear() { return btnClear; }
+    public JTable getTable() { return table; }
+    public DefaultTableModel geTableModel() { return tableModel; }
 
     public static void main(String[] args) {
         new UserManagementView();

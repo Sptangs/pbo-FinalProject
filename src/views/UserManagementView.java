@@ -2,6 +2,9 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Color;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.UserController;
@@ -19,7 +23,7 @@ public class UserManagementView extends JFrame {
 
     private JButton btnAdd;
     private JButton btnEdit;
-    private JButton btnDelete;
+    private JButton btnDelete;  
 
     private JTable table;
     private DefaultTableModel tableModel;
@@ -36,22 +40,30 @@ public class UserManagementView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
-        // =========================
-        // TOP PANEL
-        // =========================
+        //top panel
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         btnAdd = new JButton("Tambah Data");
         btnEdit = new JButton("Edit");
         btnDelete = new JButton("Hapus");
 
+        //ukuran tombol
+        Dimension btnSize = new Dimension(130, 45);
+        btnAdd.setPreferredSize(btnSize);
+        btnEdit.setPreferredSize(btnSize);
+        btnDelete.setPreferredSize(btnSize);
+
+        //font tombol
+        Font btnFont = new Font("Segoe UI", Font.BOLD, 14);
+        btnAdd.setFont(btnFont);
+        btnEdit.setFont(btnFont);
+        btnDelete.setFont(btnFont);
+
         topPanel.add(btnAdd);
         topPanel.add(btnEdit);
         topPanel.add(btnDelete);
 
-        // =========================
-        // TABLE
-        // =========================
+        // tabel
         tableModel = new DefaultTableModel(
                 new String[]{
                         "ID",
@@ -61,30 +73,72 @@ public class UserManagementView extends JFrame {
                         "Alamat",
                         "No HP",
                         "Role"
-                },
-                0
+                },                0
         );
 
         table = new JTable(tableModel);
 
+        //warna garis header tabele
+        table.setShowGrid(true);
+        table.setGridColor(Color.BLACK);           
+        table.setIntercellSpacing(new Dimension(1, 1)); //jarak antar sel, biar garis kelihatan
+
+        //tinggu baris
+        table.setRowHeight(35);
+
+        //buat bold, tengah, border
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer() {
+        @Override
+        public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setFont(new Font("Segoe UI", Font.BOLD, 15));
+                setHorizontalAlignment(JLabel.CENTER);
+                //border bawah
+                setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+                return this;
+        }
+        };
+        table.getTableHeader().setDefaultRenderer(headerRenderer);
+        table.getTableHeader().setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        //data
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+        table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        //font data
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);   //id
+        table.getColumnModel().getColumn(1).setPreferredWidth(180);  //nama
+        table.getColumnModel().getColumn(2).setPreferredWidth(60);   //umur
+        table.getColumnModel().getColumn(3).setPreferredWidth(200);  //email
+        table.getColumnModel().getColumn(4).setPreferredWidth(150);  //alamat
+        table.getColumnModel().getColumn(5).setPreferredWidth(120);  //hp
+        table.getColumnModel().getColumn(6).setPreferredWidth(100);  //role
+
+        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        table.getTableHeader().setPreferredSize(new Dimension(0, 35));
+
         JScrollPane scrollPane = new JScrollPane(table);
 
-        // =========================
-        // LOAD DATA
-        // =========================
+        //load data
         loadDataFromTxt();
 
-        // =========================
-        // ADD COMPONENT
-        // =========================
+        //nambah komponen
+        JPanel tableWrapper = new JPanel(new BorderLayout());
+        tableWrapper.setBorder(BorderFactory.createEmptyBorder(10, 100, 100, 100)); // atas, kiri, bawah, kanan
+        tableWrapper.add(scrollPane, BorderLayout.CENTER);
+
         add(topPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(tableWrapper, BorderLayout.CENTER);
 
         setVisible(true);
 
-        // =========================
-        // EVENT BUTTON
-        // =========================
+        //button
         btnAdd.addActionListener(e -> showFormDialog());
 
         btnEdit.addActionListener(e -> editData());
@@ -92,15 +146,11 @@ public class UserManagementView extends JFrame {
         btnDelete.addActionListener(e -> deleteData());
     }
 
-    // =========================
-    // LOAD DATA TXT
-    // =========================
+        //load data txt
     private void loadDataFromTxt() {
 
         try {
-
             File file = new File("data/users.txt");
-
             if (!file.exists()) {
                 return;
             }
@@ -112,9 +162,7 @@ public class UserManagementView extends JFrame {
             String line;
 
             while ((line = reader.readLine()) != null) {
-
                 String[] data = line.split(",");
-
                 tableModel.addRow(new Object[]{
                         data[0],
                         data[1],
@@ -125,21 +173,14 @@ public class UserManagementView extends JFrame {
                         data[7]
                 });
             }
-
             reader.close();
-
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
     }
 
-    // =========================
-    // FORM TAMBAH DATA
-    // =========================
+        //form tambah data
     private void showFormDialog() {
-
         JTextField txtId = new JTextField();
         JTextField txtNama = new JTextField();
         JTextField txtAge = new JTextField();
@@ -156,9 +197,7 @@ public class UserManagementView extends JFrame {
                         "WORKER"
                 }
         );
-
         JPanel panel = new JPanel();
-
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         panel.add(new JLabel("ID User"));
@@ -192,12 +231,9 @@ public class UserManagementView extends JFrame {
                 JOptionPane.OK_CANCEL_OPTION
         );
 
-        // =========================
-        // JIKA OK
-        // =========================
+        //jika oke
         if (result == JOptionPane.OK_OPTION) {
-
-            // Tambah ke tabel
+            //tambah ke tabel
             tableModel.addRow(new Object[]{
                     txtId.getText(),
                     txtNama.getText(),
@@ -208,7 +244,7 @@ public class UserManagementView extends JFrame {
                     cbRole.getSelectedItem()
             });
 
-            // Simpan ke txt
+        //simpan ke txt
             controller.addUser(
                     Integer.parseInt(txtId.getText()),
                     txtNama.getText(),
@@ -227,20 +263,14 @@ public class UserManagementView extends JFrame {
         }
     }
 
-    // =========================
-    // EDIT DATA
-    // =========================
+        //edit data
     private void editData() {
-
         int row = table.getSelectedRow();
-
         if (row == -1) {
-
             JOptionPane.showMessageDialog(
                     this,
                     "Pilih data di tabel terlebih dahulu!"
             );
-
             return;
         }
 
@@ -312,9 +342,7 @@ public class UserManagementView extends JFrame {
                 "Edit Data",
                 JOptionPane.OK_CANCEL_OPTION
         );
-
         if (result == JOptionPane.OK_OPTION) {
-
             tableModel.setValueAt(txtId.getText(), row, 0);
             tableModel.setValueAt(txtNama.getText(), row, 1);
             tableModel.setValueAt(txtAge.getText(), row, 2);
@@ -332,36 +360,25 @@ public class UserManagementView extends JFrame {
         }
     }
 
-    // =========================
-    // DELETE DATA
-    // =========================
+        //hapus data
     private void deleteData() {
-
         int row = table.getSelectedRow();
-
         if (row == -1) {
-
             JOptionPane.showMessageDialog(
                     this,
                     "Pilih data di tabel terlebih dahulu!"
             );
-
             return;
         }
-
         int confirm = JOptionPane.showConfirmDialog(
                 this,
                 "Yakin ingin menghapus data ini?",
                 "Konfirmasi",
                 JOptionPane.YES_NO_OPTION
         );
-
         if (confirm == JOptionPane.YES_OPTION) {
-
             tableModel.removeRow(row);
-
             saveTableToTxt();
-
             JOptionPane.showMessageDialog(
                     this,
                     "Data berhasil dihapus!"
@@ -369,21 +386,15 @@ public class UserManagementView extends JFrame {
         }
     }
 
-    // =========================
-    // SAVE TABLE TO TXT
-    // =========================
+        //simpan ke txt
     private void saveTableToTxt() {
 
         try {
-
             File file = new File("data/users.txt");
-
             BufferedWriter writer = new BufferedWriter(
                     new FileWriter(file)
             );
-
             for (int i = 0; i < tableModel.getRowCount(); i++) {
-
                 writer.write(
                         tableModel.getValueAt(i, 0) + "," +
                         tableModel.getValueAt(i, 1) + "," +
@@ -394,27 +405,23 @@ public class UserManagementView extends JFrame {
                         tableModel.getValueAt(i, 5) + "," +
                         tableModel.getValueAt(i, 6)
                 );
-
                 writer.newLine();
             }
-
             writer.close();
-
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
     }
 
-    // =========================
-    // MAIN
-    // =========================
     public static void main(String[] args) {
+        try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
 
         SwingUtilities.invokeLater(() -> {
             new UserManagementView();
         });
-
     }
 }

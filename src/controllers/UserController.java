@@ -1,77 +1,168 @@
-// package controllers;
+package controllers;
 
-// import java.util.ArrayList;
-// import models.User;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
-// public class UserController {
+import models.User;
+import models.User.Role;
 
-//     private ArrayList<User> listUser = new ArrayList<>();
+public class UserController {
 
-//     public void AddUser(int id,
-//                             String nama,
-//                             String email,
-//                             String password,
-//                             String alamat) {
+    private ArrayList<User> listUser = new ArrayList<>();
 
-//         User user = new User();
+    // =========================
+    // ADD USER
+    // =========================
+    public void addUser(int idUser,
+                        String nama,
+                        int age,
+                        String email,
+                        String password,
+                        String alamat,
+                        String noHp,
+                        Role role) {
 
-//         user.mengisiData(id, nama, email, password, alamat);
+        User user = new User(
+                idUser,
+                nama,
+                age,
+                email,
+                password,
+                alamat,
+                noHp,
+                role
+        );
 
-//         listUser.add(user);
+        // Simpan ke ArrayList
+        listUser.add(user);
 
-//         System.out.println("User berhasil ditambahkan!");
-//     }
+        // Simpan ke TXT
+        simpanKeTxt(user);
 
-//     public void GetUser() {
+        System.out.println("User berhasil ditambahkan!");
+    }
 
-//         if (listUser.isEmpty()) {
+    // =========================
+    // SIMPAN KE TXT
+    // =========================
+    private void simpanKeTxt(User user) {
 
-//             System.out.println("Data user kosong!");
-//             return;
-//         }
+        try {
 
-//         for (User user : listUser) {
+            // Folder data
+            File folder = new File("data");
 
-//             user.tampilInfo();
-//         }
-//     }
+            // Jika folder belum ada
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
 
-//     public void updateUser(int idCari,
-//                             String namaBaru,
-//                             String emailBaru,
-//                             String passwordBaru,
-//                             String alamatBaru) {
+            // File users.txt
+            File file = new File(folder, "users.txt");
 
-//         for (User user : listUser) {
+            // Jika file belum ada
+            if (!file.exists()) {
+                file.createNewFile();
+            }
 
-//             if (user.id_user == idCari) {
+            // Writer
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(file, true)
+            );
 
-//                 user.nama = namaBaru;
-//                 user.email = emailBaru;
-//                 user.password = passwordBaru;
-//                 user.alamat = alamatBaru;
+            // Simpan data
+            writer.write(
+                    user.getIdUser() + "," +
+                    user.getNama() + "," +
+                    user.getAge() + "," +
+                    user.getEmail() + "," +
+                    user.getPassword() + "," +
+                    user.getAlamat() + "," +
+                    user.getNoHp() + "," +
+                    user.getRole()
+            );
 
-//                 System.out.println("Data user berhasil diupdate!");
-//                 return;
-//             }
-//         }
+            writer.newLine();
 
-//         System.out.println("User tidak ditemukan!");
-//     }
+            writer.close();
 
-//     public void deleteUser(int idCari) {
+            System.out.println("Data berhasil disimpan!");
 
-//         for (User user : listUser) {
+        } catch (IOException e) {
 
-//             if (user.id_user == idCari) {
+            System.out.println("Gagal menyimpan data!");
+            e.printStackTrace();
 
-//                 listUser.remove(user);
+        }
+    }
 
-//                 System.out.println("User berhasil dihapus!");
-//                 return;
-//             }
-//         }
+    public void getUser() {
 
-//         System.out.println("User tidak ditemukan!");
-//     }
-// }
+        if (listUser.isEmpty()) {
+
+            System.out.println("Data user kosong!");
+            return;
+        }
+
+        for (User user : listUser) {
+
+            System.out.println("===== DATA USER =====");
+            System.out.println("ID User : " + user.getIdUser());
+            System.out.println("Nama    : " + user.getNama());
+            System.out.println("Umur    : " + user.getAge());
+            System.out.println("Email   : " + user.getEmail());
+            System.out.println("Alamat  : " + user.getAlamat());
+            System.out.println("No HP   : " + user.getNoHp());
+            System.out.println("Role    : " + user.getRole());
+            System.out.println("=====================");
+        }
+    }
+
+    public void updateUser(int idCari,
+                           String namaBaru,
+                           int ageBaru,
+                           String emailBaru,
+                           String passwordBaru,
+                           String alamatBaru,
+                           String noHpBaru,
+                           Role roleBaru) {
+
+        for (User user : listUser) {
+
+            if (user.getIdUser() == idCari) {
+
+                user.setNama(namaBaru);
+                user.setAge(ageBaru);
+                user.setEmail(emailBaru);
+                user.setPassword(passwordBaru);
+                user.setAlamat(alamatBaru);
+                user.setNoHp(noHpBaru);
+                user.setRole(roleBaru);
+
+                System.out.println("User berhasil diupdate!");
+                return;
+            }
+        }
+
+        System.out.println("User tidak ditemukan!");
+    }
+
+    public void deleteUser(int idCari) {
+
+        for (int i = 0; i < listUser.size(); i++) {
+
+            if (listUser.get(i).getIdUser() == idCari) {
+
+                listUser.remove(i);
+
+                System.out.println("User berhasil dihapus!");
+                return;
+            }
+        }
+
+        System.out.println("User tidak ditemukan!");
+    }
+}

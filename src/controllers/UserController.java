@@ -13,17 +13,44 @@ public class UserController {
 
     private ArrayList<User> listUser = new ArrayList<>();
 
-    public void addUser(int idUser,
-                        String nama,
-                        int age,
-                        String email,
-                        String password,
-                        String alamat,
-                        String noHp,
-                        Role role) {
+    public boolean addUser(String nama,
+                       int age,
+                       String email,
+                       String password,
+                       String alamat,
+                       String noHp,
+                       Role role) {
+
+    try {
+
+        if (email == null || !email.contains("@")) {
+
+            System.out.println("Email tidak valid!");
+            return false;
+        }
+
+        if (!noHp.matches("[0-9]+")) {
+
+            System.out.println("Nomor HP hanya boleh angka!");
+            return false;
+        }
+
+        for (User user : listUser) {
+
+            if (user.getEmail().equalsIgnoreCase(email)) {
+
+                System.out.println("Email sudah digunakan!");
+                return false;
+            }
+
+            if (user.getNoHp().equals(noHp)) {
+
+                System.out.println("Nomor HP sudah digunakan!");
+                return false;
+            }
+        }
 
         User user = new User(
-                idUser,
                 nama,
                 age,
                 email,
@@ -33,66 +60,67 @@ public class UserController {
                 role
         );
 
-        // Simpan ke ArrayList
         listUser.add(user);
 
-        // Simpan ke TXT
-        simpanKeTxt(user);
+        saveToTxt(user);
 
         System.out.println("User berhasil ditambahkan!");
-    }
 
-    // =========================
-    // SIMPAN KE TXT
-    // =========================
-    private void simpanKeTxt(User user) {
+        return true;
+
+    } catch (IllegalArgumentException e) {
+
+        System.out.println("Validation Error: " + e.getMessage());
+
+        return false;
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+
+        return false;
+    }
+}
+
+    private void saveToTxt(User user) {
 
         try {
 
-            // Folder data
             File folder = new File("data");
 
-            // Jika folder belum ada
             if (!folder.exists()) {
                 folder.mkdirs();
             }
 
-            // File users.txt
             File file = new File(folder, "users.txt");
 
-            // Jika file belum ada
             if (!file.exists()) {
                 file.createNewFile();
             }
 
-            // Writer
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(file, true)
-            );
+                    new FileWriter(file, true));
 
-            // Simpan data
             writer.write(
                     user.getIdUser() + "," +
-                    user.getNama() + "," +
-                    user.getAge() + "," +
-                    user.getEmail() + "," +
-                    user.getPassword() + "," +
-                    user.getAlamat() + "," +
-                    user.getNoHp() + "," +
-                    user.getRole()
-            );
+                            user.getNama() + "," +
+                            user.getAge() + "," +
+                            user.getEmail() + "," +
+                            user.getPassword() + "," +
+                            user.getAlamat() + "," +
+                            user.getNoHp() + "," +
+                            user.getRole());
 
             writer.newLine();
 
             writer.close();
 
-            System.out.println("Data berhasil disimpan!");
+            System.out.println("Data user berhasil disimpan!");
 
         } catch (IOException e) {
 
-            System.out.println("Gagal menyimpan data!");
+            System.out.println("Gagal menyimpan data user!");
             e.printStackTrace();
-
         }
     }
 
@@ -106,60 +134,98 @@ public class UserController {
 
         for (User user : listUser) {
 
-            System.out.println("===== DATA USER =====");
-            System.out.println("ID User : " + user.getIdUser());
-            System.out.println("Nama    : " + user.getNama());
-            System.out.println("Umur    : " + user.getAge());
-            System.out.println("Email   : " + user.getEmail());
-            System.out.println("Alamat  : " + user.getAlamat());
-            System.out.println("No HP   : " + user.getNoHp());
-            System.out.println("Role    : " + user.getRole());
-            System.out.println("=====================");
+            user.displayInfo();
         }
     }
 
-    public void updateUser(int idCari,
-                           String namaBaru,
-                           int ageBaru,
-                           String emailBaru,
-                           String passwordBaru,
-                           String alamatBaru,
-                           String noHpBaru,
-                           Role roleBaru) {
+    public User getByIdUser(int idCari) {
 
         for (User user : listUser) {
 
             if (user.getIdUser() == idCari) {
 
-                user.setNama(namaBaru);
-                user.setAge(ageBaru);
-                user.setEmail(emailBaru);
-                user.setPassword(passwordBaru);
-                user.setAlamat(alamatBaru);
-                user.setNoHp(noHpBaru);
-                user.setRole(roleBaru);
-
-                System.out.println("User berhasil diupdate!");
-                return;
+                return user;
             }
         }
 
-        System.out.println("User tidak ditemukan!");
+        return null;
     }
 
-    public void deleteUser(int id) {
+    public void updateUser(int idCari,
+            String namaBaru,
+            int ageBaru,
+            String emailBaru,
+            String passwordBaru,
+            String alamatBaru,
+            String noHpBaru,
+            Role roleBaru) {
 
-        for (int i = 0; i < listUser.size(); i++) {
+        try {
 
-            if (listUser.get(i).getIdUser() == id) {
+            User user = getByIdUser(idCari);
 
-                listUser.remove(i);
+            if (user == null) {
 
-                System.out.println("User berhasil dihapus!");
+                System.out.println("User tidak ditemukan!");
                 return;
             }
+            if (emailBaru == null || !emailBaru.contains("@")) {
+
+                System.out.println("Email tidak valid! Harus mengandung '@'");
+                return;
+            }
+
+            for (User cekUser : listUser) {
+
+                if (cekUser.getIdUser() != idCari) {
+
+                    if (cekUser.getEmail().equalsIgnoreCase(emailBaru)) {
+
+                        System.out.println("Email sudah digunakan!");
+                        return;
+                    }
+
+                    if (cekUser.getNoHp().equals(noHpBaru)) {
+
+                        System.out.println("Nomor HP sudah digunakan!");
+                        return;
+                    }
+                }
+            }
+
+            user.setNama(namaBaru);
+            user.setAge(ageBaru);
+            user.setEmail(emailBaru);
+            user.setPassword(passwordBaru);
+            user.setAlamat(alamatBaru);
+            user.setNoHp(noHpBaru);
+            user.setRole(roleBaru);
+
+            System.out.println("User berhasil diupdate!");
+
+        } catch (IllegalArgumentException e) {
+
+            System.out.println("Validation Error: " + e.getMessage());
+
+        } catch (Exception e) {
+
+            System.out.println("Terjadi error saat update user!");
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(int idCari) {
+
+        User user = getByIdUser(idCari);
+
+        if (user == null) {
+
+            System.out.println("User tidak ditemukan!");
+            return;
         }
 
-        System.out.println("User tidak ditemukan!");
+        listUser.remove(user);
+
+        System.out.println("User berhasil dihapus!");
     }
 }

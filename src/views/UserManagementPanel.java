@@ -26,6 +26,7 @@ public class UserManagementPanel extends JPanel {
     private UserController controller;
 
     public UserManagementPanel() {
+
         controller = new UserController();
 
         setLayout(new BorderLayout(10, 10));
@@ -37,16 +38,16 @@ public class UserManagementPanel extends JPanel {
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         JLabel titleLabel = new JLabel("Manajemen User");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+
         headerPanel.add(titleLabel, BorderLayout.WEST);
 
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         topPanel.setBackground(Color.WHITE);
-        topPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 15, 15));
 
-        btnAdd = createButton("Tambah Data");
+        btnAdd = createButton("Tambah");
         btnEdit = createButton("Edit");
         btnDelete = createButton("Hapus");
 
@@ -67,23 +68,23 @@ public class UserManagementPanel extends JPanel {
                 0);
 
         table = new JTable(tableModel);
+
         table.setRowHeight(30);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        table.setBackground(Color.WHITE);
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
 
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.getViewport().setBackground(Color.WHITE);
 
-        JPanel tableWrapper = new JPanel(new BorderLayout());
-        tableWrapper.setBackground(Color.WHITE);
-        tableWrapper.setBorder(BorderFactory.createEmptyBorder(0, 15, 15, 15));
-        tableWrapper.add(scrollPane, BorderLayout.CENTER);
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 15, 15));
+
+        centerPanel.add(topPanel, BorderLayout.NORTH);
+        centerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(centerPanel, BorderLayout.CENTER);
 
         loadDataFromTxt();
-
-        add(topPanel, BorderLayout.CENTER);
-        add(tableWrapper, BorderLayout.SOUTH);
 
         btnAdd.addActionListener(e -> showFormDialog());
         btnEdit.addActionListener(e -> editData());
@@ -91,18 +92,23 @@ public class UserManagementPanel extends JPanel {
     }
 
     private JButton createButton(String text) {
+
         JButton btn = new JButton(text);
+
         btn.setBackground(new Color(52, 152, 219));
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btn.setFocusPainted(false);
-        btn.setPreferredSize(new Dimension(120, 35));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setPreferredSize(new Dimension(120, 35));
+
         return btn;
     }
 
     private void loadDataFromTxt() {
+
         try {
+
             File file = new File("data/users.txt");
 
             if (!file.exists()) {
@@ -115,197 +121,368 @@ public class UserManagementPanel extends JPanel {
             String line;
 
             while ((line = reader.readLine()) != null) {
+
                 String[] data = line.split(",");
 
-                tableModel.addRow(new Object[] {
-                        data[0],
-                        data[1],
-                        data[2],
-                        data[3],
-                        data[5],
-                        data[6],
-                        data[7]
-                });
+                if (data.length >= 8) {
+
+                    tableModel.addRow(new Object[] {
+                            data[0],
+                            data[1],
+                            data[2],
+                            data[3],
+                            data[5],
+                            data[6],
+                            data[7]
+                    });
+                }
             }
 
             reader.close();
 
         } catch (Exception e) {
+
             e.printStackTrace();
         }
     }
 
     private void showFormDialog() {
-        JTextField txtId = new JTextField();
+
         JTextField txtNama = new JTextField();
         JTextField txtAge = new JTextField();
         JTextField txtEmail = new JTextField();
-        JTextField txtPassword = new JTextField();
+        JPasswordField txtPassword = new JPasswordField();
         JTextField txtAlamat = new JTextField();
         JTextField txtNoHp = new JTextField();
+
         JComboBox<Role> comboRole = new JComboBox<>(Role.values());
 
-        JPanel panel = new JPanel(new GridLayout(8, 2, 10, 10));
+        JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        panel.setBackground(Color.WHITE);
 
-        panel.add(new JLabel("ID:"));
-        panel.add(txtId);
-        panel.add(new JLabel("Nama:"));
-        panel.add(txtNama);
-        panel.add(new JLabel("Age:"));
-        panel.add(txtAge);
-        panel.add(new JLabel("Email:"));
-        panel.add(txtEmail);
-        panel.add(new JLabel("Password:"));
-        panel.add(txtPassword);
-        panel.add(new JLabel("Alamat:"));
-        panel.add(txtAlamat);
-        panel.add(new JLabel("No HP:"));
-        panel.add(txtNoHp);
-        panel.add(new JLabel("Role:"));
-        panel.add(comboRole);
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        int result = JOptionPane.showConfirmDialog(this, panel, "Tambah Data User",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 13);
+        Dimension fieldSize = new Dimension(250, 32);
+
+        txtNama.setPreferredSize(fieldSize);
+        txtAge.setPreferredSize(fieldSize);
+        txtEmail.setPreferredSize(fieldSize);
+        txtPassword.setPreferredSize(fieldSize);
+        txtAlamat.setPreferredSize(fieldSize);
+        txtNoHp.setPreferredSize(fieldSize);
+        comboRole.setPreferredSize(fieldSize);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        JLabel lblNama = new JLabel("Nama");
+        lblNama.setFont(labelFont);
+        panel.add(lblNama, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtNama, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JLabel lblAge = new JLabel("Age");
+        lblAge.setFont(labelFont);
+        panel.add(lblAge, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtAge, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JLabel lblEmail = new JLabel("Email");
+        lblEmail.setFont(labelFont);
+        panel.add(lblEmail, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtEmail, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JLabel lblPassword = new JLabel("Password");
+        lblPassword.setFont(labelFont);
+        panel.add(lblPassword, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtPassword, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JLabel lblAlamat = new JLabel("Alamat");
+        lblAlamat.setFont(labelFont);
+        panel.add(lblAlamat, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtAlamat, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JLabel lblNoHp = new JLabel("No HP");
+        lblNoHp.setFont(labelFont);
+        panel.add(lblNoHp, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtNoHp, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+
+        JLabel lblRole = new JLabel("Role");
+        lblRole.setFont(labelFont);
+        panel.add(lblRole, gbc);
+
+        gbc.gridx = 1;
+        panel.add(comboRole, gbc);
+
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Tambah User",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
+
             try {
-                int id = Integer.parseInt(txtId.getText());
+
                 String nama = txtNama.getText();
                 int age = Integer.parseInt(txtAge.getText());
                 String email = txtEmail.getText();
-                String password = txtPassword.getText();
+                String password = new String(txtPassword.getPassword());
                 String alamat = txtAlamat.getText();
                 String noHp = txtNoHp.getText();
+
                 Role role = (Role) comboRole.getSelectedItem();
 
-                controller.addUser(id, nama, age, email, password, alamat, noHp, role);
+                boolean success = controller.addUser(
+                        nama,
+                        age,
+                        email,
+                        password,
+                        alamat,
+                        noHp,
+                        role);
 
-                tableModel.addRow(new Object[] { id, nama, age, email, alamat, noHp, role });
+                if (success) {
 
-                saveDataToTxt();
+                    int lastId = tableModel.getRowCount() + 1;
 
-                JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan!");
+                    tableModel.addRow(new Object[] {
+                            lastId,
+                            nama,
+                            age,
+                            email,
+                            alamat,
+                            noHp,
+                            role
+                    });
 
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+                    saveDataToTxt();
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Data berhasil ditambahkan!");
+
+                } else {
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Data gagal ditambahkan!\nCek email atau nomor HP.");
+                }
+
+            } catch (NumberFormatException e) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Age harus berupa angka!");
+            } catch (Exception e) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error : " + e.getMessage());
             }
         }
     }
 
     private void editData() {
+
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Pilih data yang ingin diedit!");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Pilih data terlebih dahulu!");
+
             return;
         }
 
-        JTextField txtId = new JTextField((String) tableModel.getValueAt(selectedRow, 0));
-        JTextField txtNama = new JTextField((String) tableModel.getValueAt(selectedRow, 1));
-        JTextField txtAge = new JTextField(String.valueOf(tableModel.getValueAt(selectedRow, 2)));
-        JTextField txtEmail = new JTextField((String) tableModel.getValueAt(selectedRow, 3));
-        JTextField txtAlamat = new JTextField((String) tableModel.getValueAt(selectedRow, 4));
-        JTextField txtNoHp = new JTextField((String) tableModel.getValueAt(selectedRow, 5));
+        JTextField txtNama = new JTextField(
+                tableModel.getValueAt(selectedRow, 1).toString());
+
+        JTextField txtAge = new JTextField(
+                tableModel.getValueAt(selectedRow, 2).toString());
+
+        JTextField txtEmail = new JTextField(
+                tableModel.getValueAt(selectedRow, 3).toString());
+
+        JTextField txtAlamat = new JTextField(
+                tableModel.getValueAt(selectedRow, 4).toString());
+
+        JTextField txtNoHp = new JTextField(
+                tableModel.getValueAt(selectedRow, 5).toString());
+
         JComboBox<Role> comboRole = new JComboBox<>(Role.values());
-        comboRole.setSelectedItem(tableModel.getValueAt(selectedRow, 6));
 
-        txtId.setEditable(false);
+        comboRole.setSelectedItem(
+                tableModel.getValueAt(selectedRow, 6));
 
-        JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
 
-        panel.add(new JLabel("ID:"));
-        panel.add(txtId);
-        panel.add(new JLabel("Nama:"));
+        panel.add(new JLabel("Nama"));
         panel.add(txtNama);
-        panel.add(new JLabel("Age:"));
+
+        panel.add(new JLabel("Age"));
         panel.add(txtAge);
-        panel.add(new JLabel("Email:"));
+
+        panel.add(new JLabel("Email"));
         panel.add(txtEmail);
-        panel.add(new JLabel("Alamat:"));
+
+        panel.add(new JLabel("Alamat"));
         panel.add(txtAlamat);
-        panel.add(new JLabel("No HP:"));
+
+        panel.add(new JLabel("No HP"));
         panel.add(txtNoHp);
-        panel.add(new JLabel("Role:"));
+
+        panel.add(new JLabel("Role"));
         panel.add(comboRole);
 
-        int result = JOptionPane.showConfirmDialog(this, panel, "Edit Data User",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Edit User",
+                JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
+
             try {
-                int id = Integer.parseInt(txtId.getText());
-                String nama = txtNama.getText();
-                int age = Integer.parseInt(txtAge.getText());
-                String email = txtEmail.getText();
-                String alamat = txtAlamat.getText();
-                String noHp = txtNoHp.getText();
-                Role role = (Role) comboRole.getSelectedItem();
 
-                controller.updateUser(id, nama, age, email, "", alamat, noHp, role);
+                int id = Integer.parseInt(
+                        tableModel.getValueAt(selectedRow, 0).toString());
 
-                tableModel.setValueAt(nama, selectedRow, 1);
-                tableModel.setValueAt(age, selectedRow, 2);
-                tableModel.setValueAt(email, selectedRow, 3);
-                tableModel.setValueAt(alamat, selectedRow, 4);
-                tableModel.setValueAt(noHp, selectedRow, 5);
-                tableModel.setValueAt(role, selectedRow, 6);
+                controller.updateUser(
+                        id,
+                        txtNama.getText(),
+                        Integer.parseInt(txtAge.getText()),
+                        txtEmail.getText(),
+                        "123456",
+                        txtAlamat.getText(),
+                        txtNoHp.getText(),
+                        (Role) comboRole.getSelectedItem());
+
+                tableModel.setValueAt(txtNama.getText(), selectedRow, 1);
+                tableModel.setValueAt(txtAge.getText(), selectedRow, 2);
+                tableModel.setValueAt(txtEmail.getText(), selectedRow, 3);
+                tableModel.setValueAt(txtAlamat.getText(), selectedRow, 4);
+                tableModel.setValueAt(txtNoHp.getText(), selectedRow, 5);
+                tableModel.setValueAt(comboRole.getSelectedItem(), selectedRow, 6);
 
                 saveDataToTxt();
 
-                JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!");
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Data berhasil diupdate!");
 
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            } catch (Exception e) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error : " + e.getMessage());
             }
         }
     }
 
     private void deleteData() {
+
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Pilih data yang ingin dihapus!");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Pilih data terlebih dahulu!");
+
             return;
         }
 
-        int id = Integer.parseInt((String) tableModel.getValueAt(selectedRow, 0));
-
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "Anda yakin ingin menghapus data ini?",
-                "Konfirmasi Hapus",
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menghapus data?",
+                "Konfirmasi",
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
+
+            int id = Integer.parseInt(
+                    tableModel.getValueAt(selectedRow, 0).toString());
+
             controller.deleteUser(id);
+
             tableModel.removeRow(selectedRow);
+
             saveDataToTxt();
-            JOptionPane.showMessageDialog(this, "Data berhasil dihapus!");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Data berhasil dihapus!");
         }
     }
 
     private void saveDataToTxt() {
+
         try {
+
+            File folder = new File("data");
+
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
             BufferedWriter writer = new BufferedWriter(
                     new FileWriter("data/users.txt"));
 
             for (int i = 0; i < tableModel.getRowCount(); i++) {
+
                 writer.write(
                         tableModel.getValueAt(i, 0) + "," +
                                 tableModel.getValueAt(i, 1) + "," +
                                 tableModel.getValueAt(i, 2) + "," +
                                 tableModel.getValueAt(i, 3) + "," +
-                                "" + "," +
+                                "password," +
                                 tableModel.getValueAt(i, 4) + "," +
                                 tableModel.getValueAt(i, 5) + "," +
                                 tableModel.getValueAt(i, 6));
+
                 writer.newLine();
             }
 
             writer.close();
 
         } catch (Exception e) {
+
             e.printStackTrace();
         }
     }

@@ -13,9 +13,6 @@ public class UserController {
 
     private ArrayList<User> listUser = new ArrayList<>();
 
-    // =========================
-    // ADD USER
-    // =========================
     public void addUser(int idUser,
                         String nama,
                         int age,
@@ -150,11 +147,11 @@ public class UserController {
         System.out.println("User tidak ditemukan!");
     }
 
-    public void deleteUser(int idCari) {
+    public void deleteUser(int id) {
 
         for (int i = 0; i < listUser.size(); i++) {
 
-            if (listUser.get(i).getIdUser() == idCari) {
+            if (listUser.get(i).getIdUser() == id) {
 
                 listUser.remove(i);
 

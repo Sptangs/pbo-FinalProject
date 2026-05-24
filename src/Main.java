@@ -1,9 +1,8 @@
-import views.UserManagementView;
+import views.AdminDashboard;
 
 public class Main {
 
     public static void main(String[] args) {
-
-        new UserManagementView();
+        javax.swing.SwingUtilities.invokeLater(() -> new AdminDashboard());
     }
 }

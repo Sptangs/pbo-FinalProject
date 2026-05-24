@@ -5,10 +5,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import controllers.PerusahaanController;
-import models.Perusahaan;
+import controllers.PekerjaController;
+import models.Pekerja;
 
-public class PerusahaanManagementPanel extends JPanel {
+public class PekerjaManagementPanel extends JPanel {
 
     private JButton btnAdd;
     private JButton btnEdit;
@@ -17,11 +17,11 @@ public class PerusahaanManagementPanel extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
 
-    private PerusahaanController controller;
+    private PekerjaController controller;
 
-    public PerusahaanManagementPanel() {
+    public PekerjaManagementPanel() {
 
-        controller = new PerusahaanController();
+        controller = new PekerjaController();
 
         setLayout(new BorderLayout(10, 10));
         setBackground(new Color(236, 240, 241));
@@ -34,7 +34,7 @@ public class PerusahaanManagementPanel extends JPanel {
         headerPanel.setBorder(
                 BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel titleLabel = new JLabel("Manajemen Perusahaan");
+        JLabel titleLabel = new JLabel("Manajemen Pekerja");
 
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
@@ -56,14 +56,14 @@ public class PerusahaanManagementPanel extends JPanel {
         topPanel.add(btnDelete);
 
         tableModel = new DefaultTableModel(
-                new String[] {
+                new String[]{
                         "ID",
-                        "Nama Perusahaan",
-                        "Alamat",
+                        "Nama",
+                        "Umur",
                         "Email",
                         "No Telepon",
-                        "Bidang",
-                        "Deskripsi"
+                        "Alamat",
+                        "Keahlian"
                 },
                 0);
 
@@ -112,9 +112,7 @@ public class PerusahaanManagementPanel extends JPanel {
         refreshTable();
 
         btnAdd.addActionListener(e -> showFormDialog());
-
         btnEdit.addActionListener(e -> editData());
-
         btnDelete.addActionListener(e -> deleteData());
     }
 
@@ -141,16 +139,16 @@ public class PerusahaanManagementPanel extends JPanel {
 
         tableModel.setRowCount(0);
 
-        for (Perusahaan perusahaan : controller.getAllPerusahaan()) {
+        for (Pekerja p : controller.getAllPekerja()) {
 
-            tableModel.addRow(new Object[] {
-                    perusahaan.getIdPerusahaan(),
-                    perusahaan.getNamaPerusahaan(),
-                    perusahaan.getAlamat(),
-                    perusahaan.getEmail(),
-                    perusahaan.getNoTelepon(),
-                    perusahaan.getBidang(),
-                    perusahaan.getDeskripsi()
+            tableModel.addRow(new Object[]{
+                    p.getIdPekerja(),
+                    p.getNama(),
+                    p.getUmur(),
+                    p.getEmail(),
+                    p.getNoTelepon(),
+                    p.getAlamat(),
+                    p.getKeahlian()
             });
         }
     }
@@ -158,160 +156,71 @@ public class PerusahaanManagementPanel extends JPanel {
     private void showFormDialog() {
 
         JTextField txtNama = new JTextField();
-
-        JTextField txtAlamat = new JTextField();
-
+        JTextField txtUmur = new JTextField();
         JTextField txtEmail = new JTextField();
-
         JTextField txtTelepon = new JTextField();
+        JTextField txtAlamat = new JTextField();
+        JTextField txtKeahlian = new JTextField();
 
-        JTextField txtBidang = new JTextField();
+        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
 
-        JTextArea txtDeskripsi = new JTextArea(4, 20);
+        panel.add(new JLabel("Nama"));
+        panel.add(txtNama);
 
-        JScrollPane scrollDesc = new JScrollPane(txtDeskripsi);
+        panel.add(new JLabel("Umur"));
+        panel.add(txtUmur);
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        panel.add(new JLabel("Email"));
+        panel.add(txtEmail);
 
-        panel.setBorder(
-                BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        panel.add(new JLabel("No Telepon"));
+        panel.add(txtTelepon);
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        panel.add(new JLabel("Alamat"));
+        panel.add(txtAlamat);
 
-        gbc.insets = new Insets(8, 8, 8, 8);
-
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        Font labelFont = new Font("Segoe UI", Font.BOLD, 13);
-
-        Dimension fieldSize = new Dimension(260, 32);
-
-        txtNama.setPreferredSize(fieldSize);
-        txtAlamat.setPreferredSize(fieldSize);
-        txtEmail.setPreferredSize(fieldSize);
-        txtTelepon.setPreferredSize(fieldSize);
-        txtBidang.setPreferredSize(fieldSize);
-
-        int y = 0;
-
-        gbc.gridx = 0;
-        gbc.gridy = y;
-
-        JLabel lblNama = new JLabel("Nama Perusahaan");
-
-        lblNama.setFont(labelFont);
-
-        panel.add(lblNama, gbc);
-
-        gbc.gridx = 1;
-
-        panel.add(txtNama, gbc);
-
-        y++;
-
-        gbc.gridx = 0;
-        gbc.gridy = y;
-
-        JLabel lblAlamat = new JLabel("Alamat");
-
-        lblAlamat.setFont(labelFont);
-
-        panel.add(lblAlamat, gbc);
-
-        gbc.gridx = 1;
-
-        panel.add(txtAlamat, gbc);
-
-        y++;
-
-        gbc.gridx = 0;
-        gbc.gridy = y;
-
-        JLabel lblEmail = new JLabel("Email");
-
-        lblEmail.setFont(labelFont);
-
-        panel.add(lblEmail, gbc);
-
-        gbc.gridx = 1;
-
-        panel.add(txtEmail, gbc);
-
-        y++;
-
-        gbc.gridx = 0;
-        gbc.gridy = y;
-
-        JLabel lblTelepon = new JLabel("No Telepon");
-
-        lblTelepon.setFont(labelFont);
-
-        panel.add(lblTelepon, gbc);
-
-        gbc.gridx = 1;
-
-        panel.add(txtTelepon, gbc);
-
-        y++;
-
-        gbc.gridx = 0;
-        gbc.gridy = y;
-
-        JLabel lblBidang = new JLabel("Bidang");
-
-        lblBidang.setFont(labelFont);
-
-        panel.add(lblBidang, gbc);
-
-        gbc.gridx = 1;
-
-        panel.add(txtBidang, gbc);
-
-        y++;
-
-        gbc.gridx = 0;
-        gbc.gridy = y;
-
-        JLabel lblDeskripsi = new JLabel("Deskripsi");
-
-        lblDeskripsi.setFont(labelFont);
-
-        panel.add(lblDeskripsi, gbc);
-
-        gbc.gridx = 1;
-
-        panel.add(scrollDesc, gbc);
+        panel.add(new JLabel("Keahlian"));
+        panel.add(txtKeahlian);
 
         int result = JOptionPane.showConfirmDialog(
                 this,
                 panel,
-                "Tambah Perusahaan",
+                "Tambah Pekerja",
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
 
-            boolean success = controller.addPerusahaan(
-                    txtNama.getText(),
-                    txtAlamat.getText(),
-                    txtEmail.getText(),
-                    txtTelepon.getText(),
-                    txtBidang.getText(),
-                    txtDeskripsi.getText());
+            try {
+                int idPekerja = controller.getNextId();
+                int umur = Integer.parseInt(txtUmur.getText());
 
-            if (success) {
+                boolean success = controller.addPekerja(
+                        idPekerja,
+                        txtNama.getText(),
+                        umur,
+                        txtEmail.getText(),
+                        txtTelepon.getText(),
+                        txtAlamat.getText(),
+                        txtKeahlian.getText());
 
-                refreshTable();
+                if (success) {
 
+                    refreshTable();
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Data pekerja berhasil ditambahkan!");
+                } else {
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            controller.getMessage());
+                }
+            } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Data perusahaan berhasil ditambahkan!");
-
-            } else {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        controller.getMessage());
+                        "Umur harus berupa angka!");
             }
         }
     }
@@ -329,10 +238,13 @@ public class PerusahaanManagementPanel extends JPanel {
             return;
         }
 
+        int id = Integer.parseInt(
+                tableModel.getValueAt(row, 0).toString());
+
         JTextField txtNama = new JTextField(
                 tableModel.getValueAt(row, 1).toString());
 
-        JTextField txtAlamat = new JTextField(
+        JTextField txtUmur = new JTextField(
                 tableModel.getValueAt(row, 2).toString());
 
         JTextField txtEmail = new JTextField(
@@ -341,21 +253,19 @@ public class PerusahaanManagementPanel extends JPanel {
         JTextField txtTelepon = new JTextField(
                 tableModel.getValueAt(row, 4).toString());
 
-        JTextField txtBidang = new JTextField(
+        JTextField txtAlamat = new JTextField(
                 tableModel.getValueAt(row, 5).toString());
 
-        JTextArea txtDeskripsi = new JTextArea(
+        JTextField txtKeahlian = new JTextField(
                 tableModel.getValueAt(row, 6).toString());
-
-        JScrollPane scrollDesc = new JScrollPane(txtDeskripsi);
 
         JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
 
         panel.add(new JLabel("Nama"));
         panel.add(txtNama);
 
-        panel.add(new JLabel("Alamat"));
-        panel.add(txtAlamat);
+        panel.add(new JLabel("Umur"));
+        panel.add(txtUmur);
 
         panel.add(new JLabel("Email"));
         panel.add(txtEmail);
@@ -363,45 +273,50 @@ public class PerusahaanManagementPanel extends JPanel {
         panel.add(new JLabel("No Telepon"));
         panel.add(txtTelepon);
 
-        panel.add(new JLabel("Bidang"));
-        panel.add(txtBidang);
+        panel.add(new JLabel("Alamat"));
+        panel.add(txtAlamat);
 
-        panel.add(new JLabel("Deskripsi"));
-        panel.add(scrollDesc);
+        panel.add(new JLabel("Keahlian"));
+        panel.add(txtKeahlian);
 
         int result = JOptionPane.showConfirmDialog(
                 this,
                 panel,
-                "Edit Perusahaan",
-                JOptionPane.OK_CANCEL_OPTION);
+                "Edit Pekerja",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
 
-            int id = Integer.parseInt(
-                    tableModel.getValueAt(row, 0).toString());
+            try {
+                int umur = Integer.parseInt(txtUmur.getText());
 
-            boolean success = controller.editPerusahaan(
-                    id,
-                    txtNama.getText(),
-                    txtAlamat.getText(),
-                    txtEmail.getText(),
-                    txtTelepon.getText(),
-                    txtBidang.getText(),
-                    txtDeskripsi.getText());
+                boolean success = controller.editPekerja(
+                        id,
+                        txtNama.getText(),
+                        umur,
+                        txtEmail.getText(),
+                        txtTelepon.getText(),
+                        txtAlamat.getText(),
+                        txtKeahlian.getText());
 
-            if (success) {
+                if (success) {
 
-                refreshTable();
+                    refreshTable();
 
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Data pekerja berhasil diupdate!");
+                } else {
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            controller.getMessage());
+                }
+            } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Data berhasil diupdate!");
-
-            } else {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        controller.getMessage());
+                        "Umur harus berupa angka!");
             }
         }
     }
@@ -430,7 +345,7 @@ public class PerusahaanManagementPanel extends JPanel {
             int id = Integer.parseInt(
                     tableModel.getValueAt(row, 0).toString());
 
-            boolean success = controller.deletePerusahaan(id);
+            boolean success = controller.deletePekerja(id);
 
             if (success) {
 
@@ -438,8 +353,7 @@ public class PerusahaanManagementPanel extends JPanel {
 
                 JOptionPane.showMessageDialog(
                         this,
-                        "Data berhasil dihapus!");
-
+                        "Data pekerja berhasil dihapus!");
             } else {
 
                 JOptionPane.showMessageDialog(

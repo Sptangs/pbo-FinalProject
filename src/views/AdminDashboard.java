@@ -9,7 +9,9 @@ public class AdminDashboard extends JFrame {
     private JPanel sidebarPanel;
     private JPanel contentPanel;
     private JButton btnUser;
+    private JButton btnPekerja;
     private JButton btnPerusahaan;
+    private JButton btnLowongan;
     private CardLayout cardLayout;
 
     public AdminDashboard() {
@@ -37,9 +39,19 @@ public class AdminDashboard extends JFrame {
         sidebarPanel.add(btnUser);
         sidebarPanel.add(Box.createVerticalStrut(10));
 
+        btnPekerja = createSidebarButton("👨‍💼 Pekerja");
+        btnPekerja.addActionListener(e -> showPekerjaPanel());
+        sidebarPanel.add(btnPekerja);
+        sidebarPanel.add(Box.createVerticalStrut(10));
+
         btnPerusahaan = createSidebarButton("🏢 Perusahaan");
         btnPerusahaan.addActionListener(e -> showPerusahaanPanel());
         sidebarPanel.add(btnPerusahaan);
+        sidebarPanel.add(Box.createVerticalStrut(10));
+
+        btnLowongan = createSidebarButton("📋 Lowongan");
+        btnLowongan.addActionListener(e -> showLowonganPanel());
+        sidebarPanel.add(btnLowongan);
         sidebarPanel.add(Box.createVerticalStrut(10));
 
         JButton btnLogout = createSidebarButton("🚪 Logout");
@@ -53,7 +65,11 @@ public class AdminDashboard extends JFrame {
 
         contentPanel.add(new UserManagementPanel(), "user");
 
+        contentPanel.add(new PekerjaManagementPanel(), "pekerja");
+
         contentPanel.add(new PerusahaanManagementPanel(), "perusahaan");
+
+        contentPanel.add(new LowonganManagementPanel(), "lowongan");
 
         add(sidebarPanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
@@ -95,13 +111,33 @@ public class AdminDashboard extends JFrame {
     private void showUserPanel() {
         cardLayout.show(contentPanel, "user");
         btnUser.setBackground(new Color(41, 128, 185));
+        btnPekerja.setBackground(new Color(44, 62, 80));
         btnPerusahaan.setBackground(new Color(44, 62, 80));
+        btnLowongan.setBackground(new Color(44, 62, 80));
+    }
+
+    private void showPekerjaPanel() {
+        cardLayout.show(contentPanel, "pekerja");
+        btnPekerja.setBackground(new Color(41, 128, 185));
+        btnUser.setBackground(new Color(44, 62, 80));
+        btnPerusahaan.setBackground(new Color(44, 62, 80));
+        btnLowongan.setBackground(new Color(44, 62, 80));
     }
 
     private void showPerusahaanPanel() {
         cardLayout.show(contentPanel, "perusahaan");
         btnPerusahaan.setBackground(new Color(41, 128, 185));
         btnUser.setBackground(new Color(44, 62, 80));
+        btnPekerja.setBackground(new Color(44, 62, 80));
+        btnLowongan.setBackground(new Color(44, 62, 80));
+    }
+
+    private void showLowonganPanel() {
+        cardLayout.show(contentPanel, "lowongan");
+        btnLowongan.setBackground(new Color(41, 128, 185));
+        btnUser.setBackground(new Color(44, 62, 80));
+        btnPekerja.setBackground(new Color(44, 62, 80));
+        btnPerusahaan.setBackground(new Color(44, 62, 80));
     }
 
     private void logout() {

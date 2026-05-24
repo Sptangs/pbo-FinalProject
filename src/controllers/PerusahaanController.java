@@ -1,184 +1,194 @@
 package controllers;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import models.Perusahaan;
+
+import java.io.*;
+import java.util.ArrayList;
 
 public class PerusahaanController {
 
     private ArrayList<Perusahaan> listPerusahaan = new ArrayList<>();
+    private String message;
 
-    public void addPerusahaan(int idPerusahaan,
-                              String namaPerusahaan,
-                              String alamat,
-                              String email,
-                              String noTelepon,
-                              String bidang,
-                              String deskripsi) {
+    public PerusahaanController() {
+        loadFromTxt();
+    }
 
+    public String getMessage() {
+        return message;
+    }
+
+    private boolean isEmpty(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
+    private boolean isEmailValid(String email) {
+        return email != null && email.contains("@");
+    }
+
+    private boolean isPhoneValid(String phone) {
+        return phone != null && phone.matches("\\d{10,}");
+    }
+
+    private void loadFromTxt() {
         try {
+            File file = new File("data/perusahaan.txt");
+            if (!file.exists()) return;
 
-            Perusahaan perusahaan = new Perusahaan(
-                    idPerusahaan,
-                    namaPerusahaan,
-                    alamat,
-                    email,
-                    noTelepon,
-                    bidang,
-                    deskripsi
-            );
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
 
-            listPerusahaan.add(perusahaan);
+            while ((line = br.readLine()) != null) {
 
-            saveToTxt(perusahaan);
+                String[] d = line.split(",");
 
-            System.out.println("Perusahaan berhasil ditambahkan!");
+                if (d.length >= 7) {
+                    listPerusahaan.add(new Perusahaan(
+                            d[1], d[2], d[3], d[4], d[5], d[6]
+                    ));
+                }
+            }
 
-        } catch (IllegalArgumentException e) {
-
-            System.out.println("Validation Error: " + e.getMessage());
+            br.close();
 
         } catch (Exception e) {
-
-            System.out.println("Error while adding perusahaan!");
-            e.printStackTrace();
-
+            message = "Gagal load data";
         }
     }
 
-    private void saveToTxt(Perusahaan perusahaan) {
-
+    private void saveToTxt() {
         try {
+            File dir = new File("data");
+            if (!dir.exists()) dir.mkdirs();
 
-            File folder = new File("data");
-
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-
-            File file = new File(folder, "companies.txt");
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(file, true)
+            BufferedWriter bw = new BufferedWriter(
+                    new FileWriter("data/perusahaan.txt")
             );
 
-            writer.write(
-                    perusahaan.getIdPerusahaan() + "," +
-                    perusahaan.getNamaPerusahaan() + "," +
-                    perusahaan.getAlamat() + "," +
-                    perusahaan.getEmail() + "," +
-                    perusahaan.getNoTelepon() + "," +
-                    perusahaan.getBidang() + "," +
-                    perusahaan.getDeskripsi()
-            );
+            for (Perusahaan p : listPerusahaan) {
+                bw.write(
+                        p.getIdPerusahaan() + "," +
+                        p.getNamaPerusahaan() + "," +
+                        p.getAlamat() + "," +
+                        p.getEmail() + "," +
+                        p.getNoTelepon() + "," +
+                        p.getBidang() + "," +
+                        p.getDeskripsi()
+                );
+                bw.newLine();
+            }
 
-            writer.newLine();
+            bw.close();
 
-            writer.close();
-
-            System.out.println("Data perusahaan berhasil disimpan!");
-
-        } catch (IOException e) {
-
-            System.out.println("Gagal menyimpan data perusahaan!");
-            e.printStackTrace();
-
+        } catch (Exception e) {
+            message = "Gagal save data";
         }
     }
 
-    public void getPerusahaan() {
-
-        if (listPerusahaan.isEmpty()) {
-
-            System.out.println("Data perusahaan kosong!");
-            return;
-        }
-
-        for (Perusahaan perusahaan : listPerusahaan) {
-
-            System.out.println("===== DATA PERUSAHAAN =====");
-            System.out.println("ID           : " + perusahaan.getIdPerusahaan());
-            System.out.println("Nama         : " + perusahaan.getNamaPerusahaan());
-            System.out.println("Alamat       : " + perusahaan.getAlamat());
-            System.out.println("Email        : " + perusahaan.getEmail());
-            System.out.println("No Telepon   : " + perusahaan.getNoTelepon());
-            System.out.println("Bidang       : " + perusahaan.getBidang());
-            System.out.println("Deskripsi    : " + perusahaan.getDeskripsi());
-            System.out.println("===========================");
-        }
+    public ArrayList<Perusahaan> getAllPerusahaan() {
+        return listPerusahaan;
     }
 
-    public Perusahaan getByIdPerusahaan(int idCari) {
-
-        for (Perusahaan perusahaan : listPerusahaan) {
-
-            if (perusahaan.getIdPerusahaan() == idCari) {
-                return perusahaan;
-            }
+    public Perusahaan getById(int id) {
+        for (Perusahaan p : listPerusahaan) {
+            if (p.getIdPerusahaan() == id) return p;
         }
-
+        message = "Data tidak ditemukan";
         return null;
     }
 
-    public void editPerusahaan(int idCari,
-                               String namaBaru,
-                               String alamatBaru,
-                               String emailBaru,
-                               String noTeleponBaru,
-                               String bidangBaru,
-                               String deskripsiBaru) {
+    public boolean addPerusahaan(String nama,
+                                 String alamat,
+                                 String email,
+                                 String telepon,
+                                 String bidang,
+                                 String deskripsi) {
 
-        try {
-
-            Perusahaan perusahaan = getByIdPerusahaan(idCari);
-
-            if (perusahaan == null) {
-
-                System.out.println("Perusahaan tidak ditemukan!");
-                return;
-            }
-
-            perusahaan.setNamaPerusahaan(namaBaru);
-            perusahaan.setAlamat(alamatBaru);
-            perusahaan.setEmail(emailBaru);
-            perusahaan.setNoTelepon(noTeleponBaru);
-            perusahaan.setBidang(bidangBaru);
-            perusahaan.setDeskripsi(deskripsiBaru);
-
-            System.out.println("Perusahaan berhasil diupdate!");
-
-        } catch (IllegalArgumentException e) {
-
-            System.out.println("Validation Error: " + e.getMessage());
-
-        } catch (Exception e) {
-
-            System.out.println("Error while updating perusahaan!");
-            e.printStackTrace();
-
+        if (isEmpty(nama) || isEmpty(alamat) || isEmpty(email)
+                || isEmpty(telepon) || isEmpty(bidang)) {
+            message = "Semua field wajib diisi";
+            return false;
         }
+
+        if (!isEmailValid(email)) {
+            message = "Email tidak valid";
+            return false;
+        }
+
+        if (!isPhoneValid(telepon)) {
+            message = "Nomor telepon tidak valid";
+            return false;
+        }
+
+        for (Perusahaan p : listPerusahaan) {
+            if (p.getEmail().equalsIgnoreCase(email) ||
+                p.getNoTelepon().equals(telepon)) {
+                message = "Email / No HP sudah digunakan";
+                return false;
+            }
+        }
+
+        listPerusahaan.add(new Perusahaan(
+                nama, alamat, email, telepon, bidang, deskripsi
+        ));
+
+        saveToTxt();
+        message = "Berhasil tambah perusahaan";
+        return true;
     }
 
-    public void deletePerusahaan(int idCari) {
+    public boolean editPerusahaan(int id,
+                                  String nama,
+                                  String alamat,
+                                  String email,
+                                  String telepon,
+                                  String bidang,
+                                  String deskripsi) {
 
-        Perusahaan perusahaan = getByIdPerusahaan(idCari);
+        Perusahaan p = getById(id);
+        if (p == null) return false;
 
-        if (perusahaan != null) {
-
-            listPerusahaan.remove(perusahaan);
-
-            System.out.println("Perusahaan berhasil dihapus!");
-            return;
+        if (isEmpty(nama) || isEmpty(alamat) || isEmpty(email)
+                || isEmpty(telepon) || isEmpty(bidang)) {
+            message = "Semua field wajib diisi";
+            return false;
         }
 
-        System.out.println("Perusahaan tidak ditemukan!");
+        if (!isEmailValid(email) || !isPhoneValid(telepon)) {
+            message = "Data tidak valid";
+            return false;
+        }
+
+        for (Perusahaan x : listPerusahaan) {
+            if (x.getIdPerusahaan() != id) {
+                if (x.getEmail().equalsIgnoreCase(email) ||
+                    x.getNoTelepon().equals(telepon)) {
+                    message = "Email / No HP sudah dipakai";
+                    return false;
+                }
+            }
+        }
+
+        p.setNamaPerusahaan(nama);
+        p.setAlamat(alamat);
+        p.setEmail(email);
+        p.setNoTelepon(telepon);
+        p.setBidang(bidang);
+        p.setDeskripsi(deskripsi);
+
+        saveToTxt();
+        message = "Berhasil update";
+        return true;
+    }
+
+    public boolean deletePerusahaan(int id) {
+        Perusahaan p = getById(id);
+        if (p == null) return false;
+
+        listPerusahaan.remove(p);
+        saveToTxt();
+
+        message = "Berhasil hapus";
+        return true;
     }
 }

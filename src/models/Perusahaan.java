@@ -1,8 +1,7 @@
 package models;
 
-public class Perusahaan {
+public class Perusahaan extends Entitas {
 
-    private int idPerusahaan;
     private String namaPerusahaan;
     private String alamat;
     private String email;
@@ -10,19 +9,15 @@ public class Perusahaan {
     private String bidang;
     private String deskripsi;
 
-    public Perusahaan() {
-    }
-
-
-    public Perusahaan(int idPerusahaan,
-                      String namaPerusahaan,
+    public Perusahaan(String namaPerusahaan,
                       String alamat,
                       String email,
                       String noTelepon,
                       String bidang,
                       String deskripsi) {
 
-        setIdPerusahaan(idPerusahaan);
+        super();
+
         setNamaPerusahaan(namaPerusahaan);
         setAlamat(alamat);
         setEmail(email);
@@ -31,8 +26,27 @@ public class Perusahaan {
         setDeskripsi(deskripsi);
     }
 
+    public Perusahaan(int id,
+                      String namaPerusahaan,
+                      String alamat,
+                      String email,
+                      String noTelepon,
+                      String bidang,
+                      String deskripsi) {
+
+        super(id, true);
+
+        this.namaPerusahaan = namaPerusahaan;
+        this.alamat = alamat;
+        this.email = email;
+        this.noTelepon = noTelepon;
+        this.bidang = bidang;
+        this.deskripsi = deskripsi;
+    }
+
+
     public int getIdPerusahaan() {
-        return idPerusahaan;
+        return getId();
     }
 
     public String getNamaPerusahaan() {
@@ -59,61 +73,49 @@ public class Perusahaan {
         return deskripsi;
     }
 
-    public void setIdPerusahaan(int idPerusahaan) {
-        if (idPerusahaan <= 0) {
-            throw new IllegalArgumentException("ID perusahaan harus lebih dari 0");
-        }
-        this.idPerusahaan = idPerusahaan;
-    }
 
     public void setNamaPerusahaan(String namaPerusahaan) {
-        if (namaPerusahaan == null || namaPerusahaan.isEmpty()) {
-            throw new IllegalArgumentException("Nama perusahaan tidak boleh kosong");
+        if (namaPerusahaan == null || namaPerusahaan.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nama perusahaan tidak boleh kosong!");
         }
         this.namaPerusahaan = namaPerusahaan;
     }
 
     public void setAlamat(String alamat) {
-        if (alamat == null || alamat.isEmpty()) {
-            throw new IllegalArgumentException("Alamat tidak boleh kosong");
+        if (alamat == null || alamat.trim().isEmpty()) {
+            throw new IllegalArgumentException("Alamat tidak boleh kosong!");
         }
         this.alamat = alamat;
     }
 
     public void setEmail(String email) {
         if (email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("Format email tidak valid");
+            throw new IllegalArgumentException("Email tidak valid!");
         }
         this.email = email;
     }
 
     public void setNoTelepon(String noTelepon) {
-        if (noTelepon == null || noTelepon.length() < 10) {
-            throw new IllegalArgumentException("Nomor telepon tidak valid");
+        if (noTelepon == null || !noTelepon.matches("\\d+")) {
+            throw new IllegalArgumentException("Nomor telepon hanya angka!");
+        }
+        if (noTelepon.length() < 10) {
+            throw new IllegalArgumentException("Minimal 10 digit!");
         }
         this.noTelepon = noTelepon;
     }
 
     public void setBidang(String bidang) {
-        if (bidang == null || bidang.isEmpty()) {
-            throw new IllegalArgumentException("Bidang perusahaan tidak boleh kosong");
+        if (bidang == null || bidang.trim().isEmpty()) {
+            throw new IllegalArgumentException("Bidang tidak boleh kosong!");
         }
         this.bidang = bidang;
     }
 
     public void setDeskripsi(String deskripsi) {
+        if (deskripsi == null || deskripsi.trim().isEmpty()) {
+            throw new IllegalArgumentException("Deskripsi tidak boleh kosong!");
+        }
         this.deskripsi = deskripsi;
-    }
-
-    // Method
-    public void displayInfo() {
-        System.out.println("===== COMPANY INFO =====");
-        System.out.println("ID           : " + idPerusahaan);
-        System.out.println("Name         : " + namaPerusahaan);
-        System.out.println("Address      : " + alamat);
-        System.out.println("Email        : " + email);
-        System.out.println("Phone Number : " + noTelepon);
-        System.out.println("Field        : " + bidang);
-        System.out.println("Description  : " + deskripsi);
     }
 }

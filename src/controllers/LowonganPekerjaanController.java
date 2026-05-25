@@ -23,12 +23,10 @@ public class LowonganPekerjaanController {
         return message;
     }
 
-    // Method untuk mendapatkan semua lowongan (masih diperlukan internal)
     public List<LowonganPekerjaan> getAllLowongan() {
         return new ArrayList<>(lowonganList);
     }
 
-    // Method baru untuk mendapatkan data dalam format Object[] untuk table
     public List<Object[]> getLowonganDataForTable() {
         List<Object[]> dataList = new ArrayList<>();
         
@@ -50,7 +48,6 @@ public class LowonganPekerjaanController {
         return dataList;
     }
 
-    // Method untuk mendapatkan data lowongan tertentu berdasarkan ID
     public Object[] getLowonganById(int id) {
         for (LowonganPekerjaan l : lowonganList) {
             if (l.getId() == id) {
@@ -81,7 +78,6 @@ public class LowonganPekerjaanController {
                                String gajiMaxStr,
                                String tanggalTutupStr) {
         try {
-            // Validasi input kosong
             if (perusahaanNama == null || perusahaanNama.trim().isEmpty()) {
                 message = "Nama perusahaan tidak boleh kosong!";
                 return false;
@@ -112,7 +108,6 @@ public class LowonganPekerjaanController {
                 return false;
             }
 
-            // Validasi dan parsing gaji
             if (gajiMinStr == null || gajiMinStr.trim().isEmpty()) {
                 message = "Gaji minimum tidak boleh kosong!";
                 return false;
@@ -147,7 +142,6 @@ public class LowonganPekerjaanController {
                 return false;
             }
 
-            // Validasi dan parsing tanggal
             if (tanggalTutupStr == null || tanggalTutupStr.trim().isEmpty()) {
                 message = "Tanggal tutup tidak boleh kosong!";
                 return false;
@@ -167,7 +161,6 @@ public class LowonganPekerjaanController {
                 return false;
             }
 
-            // Buat objek lowongan baru
             LowonganPekerjaan lowongan = new LowonganPekerjaan(
                     perusahaanNama,
                     judul,
@@ -204,7 +197,6 @@ public class LowonganPekerjaanController {
                                 String gajiMinStr,
                                 String gajiMaxStr) {
         try {
-            // Cari lowongan berdasarkan ID
             LowonganPekerjaan lowongan = null;
             for (LowonganPekerjaan l : lowonganList) {
                 if (l.getId() == id) {
@@ -218,7 +210,6 @@ public class LowonganPekerjaanController {
                 return false;
             }
 
-            // Validasi input kosong
             if (judul == null || judul.trim().isEmpty()) {
                 message = "Judul tidak boleh kosong!";
                 return false;
@@ -244,7 +235,6 @@ public class LowonganPekerjaanController {
                 return false;
             }
 
-            // Validasi dan parsing gaji
             if (gajiMinStr == null || gajiMinStr.trim().isEmpty()) {
                 message = "Gaji minimum tidak boleh kosong!";
                 return false;
@@ -279,7 +269,6 @@ public class LowonganPekerjaanController {
                 return false;
             }
 
-            // Update data lowongan
             lowongan.setJudul(judul);
             lowongan.setDeskripsi(deskripsi);
             lowongan.setKualifikasi(kualifikasi);
@@ -299,7 +288,6 @@ public class LowonganPekerjaanController {
 
     public boolean deleteLowongan(int id) {
         try {
-            // Cari dan hapus lowongan berdasarkan ID
             LowonganPekerjaan toRemove = null;
             for (LowonganPekerjaan l : lowonganList) {
                 if (l.getId() == id) {

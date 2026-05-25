@@ -1,6 +1,3 @@
-// ===============================
-// FILE: models/StatusLamaran.java
-// ===============================
 
 package models;
 

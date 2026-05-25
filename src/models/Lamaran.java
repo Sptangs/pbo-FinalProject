@@ -5,101 +5,162 @@ import java.util.Objects;
 
 public class Lamaran extends Entitas {
 
-    private LowonganPekerjaan lowongan;
+    private LowonganPekerjaan jobPosting;
 
-    private Pekerja pekerja;
+    private Pekerja worker;
 
     private String cvPath;
 
-    private String suratLamaran;
+    private String coverLetter;
 
-    private Date tanggalLamaran;
+    private Date applicationDate;
 
     private StatusLamaran status;
 
-    private String catatanHR;
+    private String hrNote;
 
-    private Date tanggalDiproses;
+    private Date processedDate;
 
     public Lamaran(
-            LowonganPekerjaan lowongan,
-            Pekerja pekerja,
+            LowonganPekerjaan jobPosting,
+            Pekerja worker,
             String cvPath,
-            String suratLamaran
+            String coverLetter
     ) {
 
         super();
 
-        if (lowongan == null) {
+        if (jobPosting == null) {
             throw new IllegalArgumentException(
-                    "Lowongan tidak boleh null");
+                    "Job posting cannot be null");
         }
 
-        if (pekerja == null) {
+        if (worker == null) {
             throw new IllegalArgumentException(
-                    "Pekerja tidak boleh null");
+                    "Worker cannot be null");
         }
 
-        this.lowongan = lowongan;
+        this.jobPosting = jobPosting;
 
-        this.pekerja = pekerja;
+        this.worker = worker;
 
         this.cvPath = cvPath;
 
-        this.suratLamaran = suratLamaran;
+        this.coverLetter = coverLetter;
 
-        this.tanggalLamaran = new Date();
+        this.applicationDate = new Date();
 
         this.status = StatusLamaran.DIAJUKAN;
     }
 
 
+    public LowonganPekerjaan getJobPosting() {
+        return jobPosting;
+    }
+
     public LowonganPekerjaan getLowongan() {
-        return lowongan;
+        return jobPosting;
+    }
+
+    public Pekerja getWorker() {
+        return worker;
     }
 
     public Pekerja getPekerja() {
-        return pekerja;
+        return worker;
     }
 
     public String getCvPath() {
         return cvPath;
     }
 
+    public String getCoverLetter() {
+        return coverLetter;
+    }
+
     public String getSuratLamaran() {
-        return suratLamaran;
+        return coverLetter;
+    }
+
+    public Date getApplicationDate() {
+        return applicationDate;
     }
 
     public Date getTanggalLamaran() {
-        return tanggalLamaran;
+        return applicationDate;
     }
 
     public StatusLamaran getStatus() {
         return status;
     }
 
+    public String getHrNote() {
+        return hrNote;
+    }
+
+    public String getCatatanHR() {
+        return hrNote;
+    }
+
+    public Date getProcessedDate() {
+        return processedDate;
+    }
+
+    public Date getTanggalDiproses() {
+        return processedDate;
+    }
+
+    public void processApplication() {
+        status = StatusLamaran.DIREVIEW;
+        this.processedDate = new Date();
+    }
 
     public void prosesLamaran() {
-        status = StatusLamaran.DIREVIEW;
+        processApplication();
+    }
+
+    public void acceptApplication() {
+        status = StatusLamaran.DITERIMA;
+        this.processedDate = new Date();
     }
 
     public void terimaLamaran() {
-        status = StatusLamaran.DITERIMA;
+        acceptApplication();
+    }
+
+    public void rejectApplication(String reason) {
+        this.hrNote = reason;
+        status = StatusLamaran.DITOLAK;
+        this.processedDate = new Date();
     }
 
     public void tolakLamaran(String alasan) {
+        rejectApplication(alasan);
+    }
 
-        this.catatanHR = alasan;
+    public boolean canBeEdited() {
+        return status == StatusLamaran.DIAJUKAN 
+            || status == StatusLamaran.DIREVIEW;
+    }
 
-        status = StatusLamaran.DITOLAK;
+    public void setCvPath(String cvPath) {
+        this.cvPath = cvPath;
+    }
+
+    public void setCoverLetter(String coverLetter) {
+        this.coverLetter = coverLetter;
+    }
+
+    public void setSuratLamaran(String suratLamaran) {
+        this.coverLetter = suratLamaran;
     }
 
     @Override
     public String toString() {
 
-        return pekerja.getNama()
+        return worker.getNama()
                 + " melamar "
-                + lowongan.getJudul();
+                + jobPosting.getJudul();
     }
 
     @Override

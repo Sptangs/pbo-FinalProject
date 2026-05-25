@@ -4,9 +4,17 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 import controllers.LowonganPekerjaanController;
-import models.LowonganPekerjaan;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.swing.SpinnerDateModel;
 
 public class LowonganManagementPanel extends JPanel {
 
@@ -58,7 +66,7 @@ public class LowonganManagementPanel extends JPanel {
         tableModel = new DefaultTableModel(
                 new String[]{
                         "ID",
-                        "Perusahaan ID",
+                        "Perusahaan",
                         "Judul",
                         "Deskripsi",
                         "Kualifikasi",
@@ -142,63 +150,159 @@ public class LowonganManagementPanel extends JPanel {
 
         tableModel.setRowCount(0);
 
-        for (LowonganPekerjaan l : controller.getAllLowongan()) {
+        List<Object[]> dataList = controller.getLowonganDataForTable();
 
-            tableModel.addRow(new Object[]{
-                    l.getId(),
-                    l.getPerusahaanId(),
-                    l.getJudul(),
-                    l.getDeskripsi(),
-                    l.getKualifikasi(),
-                    l.getLokasi(),
-                    l.getJenis(),
-                    l.getGajiMin(),
-                    l.getGajiMax(),
-                    l.getTanggalTutup()
-            });
+        for (Object[] row : dataList) {
+            tableModel.addRow(row);
+        }
+    }
+
+    private class NumberOnlyFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string,
+                                 AttributeSet attr) throws BadLocationException {
+            if (string == null) return;
+            
+            if (string.matches("\\d+")) {
+                super.insertString(fb, offset, string, attr);
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text,
+                           AttributeSet attrs) throws BadLocationException {
+            if (text == null) return;
+            
+            if (text.matches("\\d+")) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
+
+        @Override
+        public void remove(FilterBypass fb, int offset, int length)
+                throws BadLocationException {
+            super.remove(fb, offset, length);
         }
     }
 
     private void showFormDialog() {
 
-        JTextField txtPerusahaanId = new JTextField();
+        JTextField txtPerusahaanNama = new JTextField();
         JTextField txtJudul = new JTextField();
-        JTextField txtDeskripsi = new JTextField();
+        JTextArea txtDeskripsi = new JTextArea(4, 20);
+        txtDeskripsi.setLineWrap(true);
+        txtDeskripsi.setWrapStyleWord(true);
+        JScrollPane scrollDeskripsi = new JScrollPane(txtDeskripsi);
+        
         JTextField txtKualifikasi = new JTextField();
         JTextField txtLokasi = new JTextField();
         JTextField txtJenis = new JTextField();
+        
         JTextField txtGajiMin = new JTextField();
         JTextField txtGajiMax = new JTextField();
-        JTextField txtTanggalTutup = new JTextField();
+        
+        ((AbstractDocument) txtGajiMin.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtGajiMax.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        
+        SpinnerDateModel dateModel = new SpinnerDateModel();
+        JSpinner dateSpinner = new JSpinner(dateModel);
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(dateSpinner, "yyyy-MM-dd");
+        dateSpinner.setEditor(editor);
+        dateSpinner.setPreferredSize(new Dimension(200, 25));
 
-        JPanel panel = new JPanel(new GridLayout(9, 2, 10, 10));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
 
-        panel.add(new JLabel("Perusahaan ID"));
-        panel.add(txtPerusahaanId);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Perusahaan"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtPerusahaanNama, gbc);
 
-        panel.add(new JLabel("Judul"));
-        panel.add(txtJudul);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Judul"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtJudul, gbc);
 
-        panel.add(new JLabel("Deskripsi"));
-        panel.add(txtDeskripsi);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.NORTH;
+        panel.add(new JLabel("Deskripsi"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weighty = 1.0;
+        panel.add(scrollDeskripsi, gbc);
 
-        panel.add(new JLabel("Kualifikasi"));
-        panel.add(txtKualifikasi);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weightx = 0.3;
+        gbc.weighty = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(new JLabel("Kualifikasi"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtKualifikasi, gbc);
 
-        panel.add(new JLabel("Lokasi"));
-        panel.add(txtLokasi);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Lokasi"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtLokasi, gbc);
 
-        panel.add(new JLabel("Jenis"));
-        panel.add(txtJenis);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Jenis"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtJenis, gbc);
 
-        panel.add(new JLabel("Gaji Min"));
-        panel.add(txtGajiMin);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Gaji Min (angka saja)"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtGajiMin, gbc);
 
-        panel.add(new JLabel("Gaji Max"));
-        panel.add(txtGajiMax);
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Gaji Max (angka saja)"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtGajiMax, gbc);
 
-        panel.add(new JLabel("Tanggal Tutup (yyyy-MM-dd)"));
-        panel.add(txtTanggalTutup);
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Tanggal Tutup"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(dateSpinner, gbc);
+
+        panel.setPreferredSize(new Dimension(600, 450));
 
         int result = JOptionPane.showConfirmDialog(
                 this,
@@ -210,10 +314,17 @@ public class LowonganManagementPanel extends JPanel {
         if (result == JOptionPane.OK_OPTION) {
 
             try {
-                int perusahaanId = Integer.parseInt(txtPerusahaanId.getText());
+                String perusahaanNama = txtPerusahaanNama.getText();
+                
+                String tanggalTutup = "";
+                Date selectedDate = (Date) dateSpinner.getValue();
+                if (selectedDate != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    tanggalTutup = sdf.format(selectedDate);
+                }
 
                 boolean success = controller.addLowongan(
-                        perusahaanId,
+                        perusahaanNama,
                         txtJudul.getText(),
                         txtDeskripsi.getText(),
                         txtKualifikasi.getText(),
@@ -221,7 +332,7 @@ public class LowonganManagementPanel extends JPanel {
                         txtJenis.getText(),
                         txtGajiMin.getText(),
                         txtGajiMax.getText(),
-                        txtTanggalTutup.getText());
+                        tanggalTutup);
 
                 if (success) {
 
@@ -236,10 +347,6 @@ public class LowonganManagementPanel extends JPanel {
                             this,
                             controller.getMessage());
                 }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Perusahaan ID dan Gaji harus berupa angka!");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(
                         this,
@@ -267,8 +374,11 @@ public class LowonganManagementPanel extends JPanel {
         JTextField txtJudul = new JTextField(
                 tableModel.getValueAt(row, 2).toString());
 
-        JTextField txtDeskripsi = new JTextField(
-                tableModel.getValueAt(row, 3).toString());
+        JTextArea txtDeskripsi = new JTextArea(
+                tableModel.getValueAt(row, 3).toString(), 4, 20);
+        txtDeskripsi.setLineWrap(true);
+        txtDeskripsi.setWrapStyleWord(true);
+        JScrollPane scrollDeskripsi = new JScrollPane(txtDeskripsi);
 
         JTextField txtKualifikasi = new JTextField(
                 tableModel.getValueAt(row, 4).toString());
@@ -285,28 +395,84 @@ public class LowonganManagementPanel extends JPanel {
         JTextField txtGajiMax = new JTextField(
                 tableModel.getValueAt(row, 8).toString());
 
-        JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10));
+        ((AbstractDocument) txtGajiMin.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        ((AbstractDocument) txtGajiMax.getDocument()).setDocumentFilter(new NumberOnlyFilter());
 
-        panel.add(new JLabel("Judul"));
-        panel.add(txtJudul);
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
 
-        panel.add(new JLabel("Deskripsi"));
-        panel.add(txtDeskripsi);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Judul"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtJudul, gbc);
 
-        panel.add(new JLabel("Kualifikasi"));
-        panel.add(txtKualifikasi);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.NORTH;
+        panel.add(new JLabel("Deskripsi"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weighty = 1.0;
+        panel.add(scrollDeskripsi, gbc);
 
-        panel.add(new JLabel("Lokasi"));
-        panel.add(txtLokasi);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 0.3;
+        gbc.weighty = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(new JLabel("Kualifikasi"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtKualifikasi, gbc);
 
-        panel.add(new JLabel("Jenis"));
-        panel.add(txtJenis);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Lokasi"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtLokasi, gbc);
 
-        panel.add(new JLabel("Gaji Min"));
-        panel.add(txtGajiMin);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Jenis"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtJenis, gbc);
 
-        panel.add(new JLabel("Gaji Max"));
-        panel.add(txtGajiMax);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Gaji Min (angka saja)"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtGajiMin, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.weightx = 0.3;
+        panel.add(new JLabel("Gaji Max (angka saja)"), gbc);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(txtGajiMax, gbc);
+
+        panel.setPreferredSize(new Dimension(600, 400));
 
         int result = JOptionPane.showConfirmDialog(
                 this,

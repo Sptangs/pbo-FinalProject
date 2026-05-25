@@ -1,5 +1,10 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,11 +82,52 @@ public class LamaranController {
                 }
             }
 
+            // ================= UPLOAD CV =================
+
+            File selectedFile =
+                    new File(cvPath);
+
+            if (!selectedFile.exists()) {
+
+                throw new IllegalArgumentException(
+                        "CV file not found");
+            }
+
+            String fileName =
+                    System.currentTimeMillis()
+                    + "_"
+                    + selectedFile.getName();
+
+            File destinationFolder =
+                    new File("src/assets/cv");
+
+            if (!destinationFolder.exists()) {
+
+                destinationFolder.mkdirs();
+            }
+
+            File destinationFile =
+                    new File(
+                            destinationFolder,
+                            fileName
+                    );
+
+            Files.copy(
+                    selectedFile.toPath(),
+                    destinationFile.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+
+            String savedCvPath =
+                    destinationFile.getPath();
+
+            // ================= CREATE APPLICATION =================
+
             Lamaran application =
                     new Lamaran(
                             job,
                             worker,
-                            cvPath,
+                            savedCvPath,
                             coverLetter
                     );
 
@@ -95,6 +141,14 @@ public class LamaranController {
         } catch (IllegalArgumentException e) {
 
             message = e.getMessage();
+
+            return false;
+
+        } catch (IOException e) {
+
+            message =
+                    "Failed to upload CV: "
+                    + e.getMessage();
 
             return false;
         }

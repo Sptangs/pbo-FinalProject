@@ -82,7 +82,6 @@ public class LamaranController {
                 }
             }
 
-            // ================= UPLOAD CV =================
 
             File selectedFile =
                     new File(cvPath);
@@ -121,7 +120,6 @@ public class LamaranController {
             String savedCvPath =
                     destinationFile.getPath();
 
-            // ================= CREATE APPLICATION =================
 
             Lamaran application =
                     new Lamaran(

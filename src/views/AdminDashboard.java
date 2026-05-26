@@ -12,6 +12,7 @@ public class AdminDashboard extends JFrame {
     private JButton btnPekerja;
     private JButton btnPerusahaan;
     private JButton btnLowongan;
+    private JButton btnLamaran;
     private CardLayout cardLayout;
 
     public AdminDashboard() {
@@ -54,6 +55,12 @@ public class AdminDashboard extends JFrame {
         sidebarPanel.add(btnLowongan);
         sidebarPanel.add(Box.createVerticalStrut(10));
 
+        btnLamaran = createSidebarButton("📄 Lamaran");
+        btnLamaran.addActionListener(e -> showLamaranPanel());
+        sidebarPanel.add(btnLamaran);
+        sidebarPanel.add(Box.createVerticalStrut(10));
+
+
         JButton btnLogout = createSidebarButton("🚪 Logout");
         btnLogout.addActionListener(e -> logout());
         sidebarPanel.add(Box.createVerticalGlue());
@@ -70,6 +77,8 @@ public class AdminDashboard extends JFrame {
         contentPanel.add(new PerusahaanManagementPanel(), "perusahaan");
 
         contentPanel.add(new LowonganManagementPanel(), "lowongan");
+
+        contentPanel.add(new KelolaLamaranView(), "lamaran");
 
         add(sidebarPanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
@@ -114,6 +123,7 @@ public class AdminDashboard extends JFrame {
         btnPekerja.setBackground(new Color(44, 62, 80));
         btnPerusahaan.setBackground(new Color(44, 62, 80));
         btnLowongan.setBackground(new Color(44, 62, 80));
+        btnLamaran.setBackground(new Color(44, 62, 80));
     }
 
     private void showPekerjaPanel() {
@@ -122,6 +132,7 @@ public class AdminDashboard extends JFrame {
         btnUser.setBackground(new Color(44, 62, 80));
         btnPerusahaan.setBackground(new Color(44, 62, 80));
         btnLowongan.setBackground(new Color(44, 62, 80));
+        btnLamaran.setBackground(new Color(44, 62, 80));
     }
 
     private void showPerusahaanPanel() {
@@ -130,6 +141,7 @@ public class AdminDashboard extends JFrame {
         btnUser.setBackground(new Color(44, 62, 80));
         btnPekerja.setBackground(new Color(44, 62, 80));
         btnLowongan.setBackground(new Color(44, 62, 80));
+        btnLamaran.setBackground(new Color(44, 62, 80));
     }
 
     private void showLowonganPanel() {
@@ -138,6 +150,16 @@ public class AdminDashboard extends JFrame {
         btnUser.setBackground(new Color(44, 62, 80));
         btnPekerja.setBackground(new Color(44, 62, 80));
         btnPerusahaan.setBackground(new Color(44, 62, 80));
+        btnLamaran.setBackground(new Color(44, 62, 80));
+    }
+
+    private void showLamaranPanel() {
+        cardLayout.show(contentPanel, "lamaran");
+        btnLamaran.setBackground(new Color(41, 128, 185));
+        btnUser.setBackground(new Color(44, 62, 80));
+        btnPekerja.setBackground(new Color(44, 62, 80));
+        btnPerusahaan.setBackground(new Color(44, 62, 80));
+        btnLowongan.setBackground(new Color(44, 62, 80));
     }
 
     private void logout() {

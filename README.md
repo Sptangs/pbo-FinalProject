@@ -6,7 +6,7 @@ Aplikasi desktop berbasis Java untuk mengelola lowongan pekerjaan, pelamaran ker
 
 ## 👨‍💻 Pembuat
 
-- Septian Angga Saputra
+- Septian Angga Saputra -> 254311014
 - Dodo Fansyuri Andrian
 - Krisna Wahyu
 

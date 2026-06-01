@@ -16,7 +16,6 @@ public class KelolaLamaranView extends JPanel {
         setBackground(Color.WHITE);
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Panel tombol di atas
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnProcess = new JButton("Proses");
         btnAccept = new JButton("Terima");
@@ -45,7 +44,6 @@ public class KelolaLamaranView extends JPanel {
         topPanel.add(btnRefresh);
         add(topPanel, BorderLayout.NORTH);
 
-        // Tabel lamaran masuk
         String[] columns = {"ID", "Nama Pelamar", "Lowongan", "Status", "Tanggal", "CV"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
@@ -60,7 +58,6 @@ public class KelolaLamaranView extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Event tombol (sementara simulasi)
         btnProcess.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row == -1) JOptionPane.showMessageDialog(this, "Pilih lamaran terlebih dahulu!");

@@ -160,22 +160,20 @@ public class LamaranController {
                     String pekerjaNama = data[1];
                     String cvPath = data[2];
                     String coverLetter = data[3];
-                    StatusLamaran status = StatusLamaran.valueOf(data[4]);
-                    LocalDate tanggalLamaran = LocalDate.parse(data[5]);
+                    // StatusLamaran status = StatusLamaran.valueOf(data[4]);
+                    // LocalDate tanggalLamaran = LocalDate.parse(data[5]);
 
-                    // Get Lowongan from controller
                     LowonganPekerjaan lowongan = lowonganController.getLowongan(lowonganId);
                     if (lowongan == null) continue;
 
-                    // Create temporary Pekerja object
                     Pekerja pekerja = new Pekerja(
-                            999,                      // ID temporary
+                            999,                      
                             pekerjaNama,
-                            30,                       // Umur valid 17-70
-                            "pekerja@example.com",    // Email
-                            "08123456789",            // Telepon
-                            "Indonesia",              // Alamat
-                            "Umum"                    // Keahlian
+                            30,                       
+                            "pekerja@example.com",    
+                            "08123456789",            
+                            "Indonesia",              
+                            "Umum"                    
                     );
 
                     Lamaran lamaran = new Lamaran(lowongan, pekerja, cvPath, coverLetter);

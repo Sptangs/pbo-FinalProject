@@ -25,7 +25,6 @@ public class AdminDashboard extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Inisialisasi controllers
         LowonganPekerjaanController lowonganController = new LowonganPekerjaanController();
         lamaranController = new LamaranController(lowonganController);
 

@@ -1,2 +1,0 @@
-3,Septian,20,septian@gmail.com,password,Keniten,0987699876789,ADMIN
-2,Septian,12,snnjNJW@gmail.com,password,Ponorogo,089615128741,ADMIN

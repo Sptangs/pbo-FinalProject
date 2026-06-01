@@ -35,7 +35,6 @@ public class FormLamaranView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Header Panel
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -46,7 +45,6 @@ public class FormLamaranView extends JFrame {
 
         add(headerPanel, BorderLayout.NORTH);
 
-        // Top Panel with Button
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         topPanel.setBackground(Color.WHITE);
         btnSubmitLamaran = new JButton("Submit Lamaran untuk Lowongan Terpilih");
@@ -58,7 +56,6 @@ public class FormLamaranView extends JFrame {
         btnSubmitLamaran.setPreferredSize(new Dimension(280, 35));
         topPanel.add(btnSubmitLamaran);
 
-        // Table untuk lowongan
         String[] columns = {
                 "ID",
                 "Perusahaan",
@@ -156,7 +153,6 @@ public class FormLamaranView extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Lowongan (read-only)
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.3;
@@ -168,7 +164,6 @@ public class FormLamaranView extends JFrame {
         txtLowongan.setEditable(false);
         formPanel.add(txtLowongan, gbc);
 
-        // Pekerja
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.3;
@@ -179,7 +174,6 @@ public class FormLamaranView extends JFrame {
         JTextField txtNamaPekerja = new JTextField();
         formPanel.add(txtNamaPekerja, gbc);
 
-        // Upload CV
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.3;
@@ -199,7 +193,6 @@ public class FormLamaranView extends JFrame {
         cvPanel.add(btnPilihCv, BorderLayout.EAST);
         formPanel.add(cvPanel, gbc);
 
-        // Surat Lamaran
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0.3;
@@ -219,7 +212,6 @@ public class FormLamaranView extends JFrame {
 
         mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(Color.WHITE);
         JButton btnKirim = new JButton("Kirim Lamaran");
@@ -238,7 +230,6 @@ public class FormLamaranView extends JFrame {
         buttonPanel.add(btnBatal);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Event handlers
         btnPilihCv.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             int result = chooser.showOpenDialog(dialog);
@@ -267,25 +258,22 @@ public class FormLamaranView extends JFrame {
             }
 
             try {
-                // Buat Pekerja temporary object dengan nama yang diinput
                 Pekerja pekerja = new Pekerja(
-                        999,                      // ID temporary
+                        999,                      
                         namaPekerja,
-                        30,                       // Umur valid 17-70
-                        "pekerja@example.com",    // Email harus valid dengan @
-                        "08123456789",            // Telepon hanya angka
-                        "Indonesia",              // Alamat
-                        "Umum"                    // Keahlian
+                        30,                       
+                        "pekerja@example.com",    
+                        "08123456789",            
+                        "Indonesia",              
+                        "Umum"                    
                 );
 
-                // Simpan CV ke direktori src/asset/cv
                 File cvFile = new File(txtCvPath.getText());
                 if (!cvFile.exists()) {
                     JOptionPane.showMessageDialog(dialog, "File CV tidak ditemukan!");
                     return;
                 }
 
-                // Pastikan direktori ada
                 File cvDir = new File("src/asset/cv");
                 if (!cvDir.exists()) {
                     cvDir.mkdirs();
@@ -296,7 +284,6 @@ public class FormLamaranView extends JFrame {
                 
                 Files.copy(cvFile.toPath(), new File(cvDestPath).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                // Submit lamaran
                 boolean success = lamaranController.addApplication(
                         lowongan,
                         pekerja,

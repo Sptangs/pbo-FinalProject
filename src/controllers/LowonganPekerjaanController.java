@@ -1,6 +1,7 @@
 package controllers;
 
 import models.LowonganPekerjaan;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,12 +12,95 @@ public class LowonganPekerjaanController {
 
     private List<LowonganPekerjaan> lowonganList;
     private String message;
-    private int nextId;
+    
 
     public LowonganPekerjaanController() {
         lowonganList = new ArrayList<>();
         message = "";
-        nextId = 1;
+        loadFromTxt();
+    }
+
+    private void loadFromTxt() {
+        try {
+            File file = new File("data/lowongan.txt");
+            if (!file.exists()) {
+                return;
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+
+                if (data.length >= 10) {
+                    LocalDate tanggalPosting = LocalDate.now();
+                    LocalDate tanggalTutup;
+                    boolean aktif = true;
+                    if (data.length == 10) {
+                        tanggalTutup = LocalDate.parse(data[9]);
+                    } else if (data.length == 11) {
+                        tanggalPosting = LocalDate.parse(data[9]);
+                        tanggalTutup = LocalDate.parse(data[10]);
+                    } else {
+                        tanggalPosting = LocalDate.parse(data[9]);
+                        tanggalTutup = LocalDate.parse(data[10]);
+                        aktif = Boolean.parseBoolean(data[11]);
+                    }
+                    
+                    LowonganPekerjaan l = new LowonganPekerjaan(
+                            Integer.parseInt(data[0]),
+                            data[1],
+                            data[2],
+                            data[3],
+                            data[4],
+                            data[5],
+                            data[6],
+                            Integer.parseInt(data[7]),
+                            Integer.parseInt(data[8]),
+                            tanggalPosting,
+                            tanggalTutup,
+                            aktif);
+
+                    lowonganList.add(l);
+                }
+            }
+
+            reader.close();
+        } catch (Exception e) {
+            message = "ERROR LOAD DATA : " + e.getMessage();
+            e.printStackTrace();
+        }
+    }
+
+    private void saveToTxt() {
+        try {
+            File file = new File("data/lowongan.txt");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+            for (LowonganPekerjaan l : lowonganList) {
+                String line = l.getId() + "," +
+                        l.getPerusahaanNama() + "," +
+                        l.getJudul() + "," +
+                        l.getDeskripsi() + "," +
+                        l.getKualifikasi() + "," +
+                        l.getLokasi() + "," +
+                        l.getJenis() + "," +
+                        l.getGajiMin() + "," +
+                        l.getGajiMax() + "," +
+                        l.getTanggalPosting() + "," +
+                        l.getTanggalTutup() + "," +
+                        l.isAktif();
+
+                writer.write(line);
+                writer.newLine();
+            }
+
+            writer.close();
+        } catch (Exception e) {
+            message = "ERROR SAVE DATA : " + e.getMessage();
+            e.printStackTrace();
+        }
     }
 
     public String getMessage() {
@@ -175,6 +259,7 @@ public class LowonganPekerjaanController {
 
 
             lowonganList.add(lowongan);
+            saveToTxt();
 
             message = "Lowongan berhasil ditambahkan!";
             return true;
@@ -276,6 +361,7 @@ public class LowonganPekerjaanController {
             lowongan.setJenis(jenis);
             lowongan.setGajiMin(gajiMin);
             lowongan.setGajiMax(gajiMax);
+            saveToTxt();
 
             message = "Lowongan berhasil diupdate!";
             return true;
@@ -302,6 +388,7 @@ public class LowonganPekerjaanController {
             }
 
             lowonganList.remove(toRemove);
+            saveToTxt();
             message = "Lowongan berhasil dihapus!";
             return true;
 

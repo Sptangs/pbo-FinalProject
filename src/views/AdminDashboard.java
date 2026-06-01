@@ -2,7 +2,6 @@ package views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class AdminDashboard extends JFrame {
 

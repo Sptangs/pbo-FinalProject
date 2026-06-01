@@ -1,16 +1,185 @@
-## 👨‍💻 Tim Pengembang
+# 💼 CariKerja
 
-| Nama                      | NIM       | Role                          | GitHub    |
-| ------------------------- | --------- | ----------------------------- | --------- |
-| Septian Angga Saputra     | 254311014 | Class Architect & Repo Master | @Sptangs  |
-| Dodo Fansyuri Andrian     | 254311023 | Data & Logic Engineer         | @todaxyz  |
-| Krisna Wahyu Indra Kusuma | 254311029 | UI & Robustness Engineer, QA  | @12Krisna |
+<div align="center">
+
+### Job Application Management System
+
+Sistem Manajemen Lowongan dan Lamaran Kerja Berbasis Java Desktop  
+Dibangun menggunakan prinsip **Object-Oriented Programming (OOP)** dan arsitektur **MVC (Model-View-Controller)**.
+
+![Java](https://img.shields.io/badge/Java-8+-orange)
+![Swing](https://img.shields.io/badge/GUI-Java%20Swing-blue)
+![Architecture](https://img.shields.io/badge/Architecture-MVC-green)
+![Storage](https://img.shields.io/badge/Database-TXT%20File-lightgrey)
+
+</div>
 
 ---
 
-# 🏗 Class Diagram
-<img width="1520" height="1562" alt="Diagram Tanpa Judul-Halaman-2 drawio" src="https://github.com/user-attachments/assets/7b9f4f8e-eb43-4c9e-bc02-21b61f4c89af" />
+# 📖 Deskripsi
 
+**CariKerja** merupakan aplikasi desktop berbasis Java yang dirancang untuk membantu proses pengelolaan lowongan pekerjaan dan pelamaran kerja dalam satu sistem terintegrasi.
+
+Aplikasi ini dikembangkan sebagai **Tugas Akhir Mata Kuliah Pemrograman Berorientasi Objek (PBO)** dengan menerapkan konsep-konsep utama OOP seperti:
+
+- Abstraction
+- Inheritance
+- Encapsulation
+- Association
+- Enumeration
+- Exception Handling
+- MVC Pattern
+
+Sistem memungkinkan administrator untuk mengelola data pengguna, perusahaan, lowongan pekerjaan, serta memproses lamaran kerja yang masuk.
+
+---
+
+# 👨‍💻 Tim Pengembang
+
+| Nama | NIM | Role | GitHub |
+|--------|--------|--------|--------|
+| Septian Angga Saputra | 254311014 | Class Architect & Repo Master | [@Sptangs](https://github.com/Sptangs) |
+| Dodo Fansyuri Andrian | 254311023 | Data & Logic Engineer | [@todaxyz](https://github.com/todaxyz) |
+| Krisna Wahyu Indra Kusuma | 254311029 | UI & Robustness Engineer, QA | [@12Krisna](https://github.com/12Krisna) |
+
+---
+
+# 🏗️ Class Diagram
+
+Diagram berikut menggambarkan struktur class serta hubungan antar entitas pada sistem CariKerja.
+
+![Class Diagram](https://github.com/user-attachments/assets/7b9f4f8e-eb43-4c9e-bc02-21b61f4c89af)
+
+---
+
+# ✨ Fitur Utama
+
+## 👤 Manajemen Pengguna
+
+- Tambah User
+- Edit User
+- Hapus User
+- Pengelolaan Role Pengguna
+
+Role yang tersedia:
+
+- ADMIN
+- STAFF
+- MANAGER
+- WORKER
+
+---
+
+## 👨‍💼 Manajemen Pekerja
+
+- CRUD Data Pekerja
+- Pengelolaan Profil Pekerja
+- Penyimpanan Data ke File TXT
+
+---
+
+## 🏢 Manajemen Perusahaan
+
+- CRUD Data Perusahaan
+- Pengelolaan Informasi Perusahaan
+- Penyimpanan Data ke File TXT
+
+---
+
+## 💼 Manajemen Lowongan Pekerjaan
+
+- Tambah Lowongan
+- Edit Lowongan
+- Hapus Lowongan
+- Pengelolaan Informasi Lowongan
+- Pengaturan Status Lowongan
+
+---
+
+## 📨 Sistem Pelamaran
+
+- Pemilihan Lowongan
+- Upload CV
+- Submit Lamaran
+- Tracking Status Lamaran
+
+Status Lamaran:
+
+```text
+DIAJUKAN
+DIREVIEW
+DITERIMA
+DITOLAK
+DIBATALKAN
+```
+
+---
+
+## 📊 Dashboard Admin
+
+Dashboard terintegrasi untuk:
+
+- Kelola User
+- Kelola Pekerja
+- Kelola Perusahaan
+- Kelola Lowongan
+- Monitoring Lamaran
+
+---
+
+# 🏛️ Arsitektur MVC
+
+```text
+┌─────────────┐
+│    Model    │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Controller  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│    View     │
+└─────────────┘
+```
+
+### Model
+
+Menyimpan data dan representasi objek bisnis.
+
+Contoh:
+
+- User
+- Pekerja
+- Perusahaan
+- LowonganPekerjaan
+- Lamaran
+
+### Controller
+
+Menangani logika bisnis dan proses CRUD.
+
+Contoh:
+
+- UserController
+- PekerjaController
+- PerusahaanController
+- LowonganPekerjaanController
+- LamaranController
+
+### View
+
+Menyediakan antarmuka pengguna berbasis Java Swing.
+
+Contoh:
+
+- AdminDashboard
+- FormLamaranView
+- RiwayatLamaranView
+
+---
 
 # 📁 Struktur Project
 
@@ -82,61 +251,63 @@ CariKerja/
 
 ---
 
-# ▶ Menjalankan Program
+# ⚙️ Instalasi
 
-## Dashboard Admin (Utama)
-
-```bash
-java -cp build Main
-```
-
-## Dashboard Admin
+## Clone Repository
 
 ```bash
-java -cp build views.AdminDashboard
-```
-
-## Form Lamaran
-
-```bash
-java -cp build views.FormLamaranView
-```
-
-## Riwayat Lamaran
-
-```bash
-java -cp build views.RiwayatLamaranView
+git clone https://github.com/Sptangs/pbo-FinalProject.git
+cd pbo-FinalProject
 ```
 
 ---
 
-# 🗄 Struktur Penyimpanan Data
+# 🔨 Build Project
 
-## users.txt
+```bash
+javac -cp "lib/jcalendar-0.8.1.jar" -d build src/Main.java src/models/*.java src/controllers/*.java src/views/*.java src/exceptions/*.java src/validators/*.java src/utils/*.java
+```
+
+---
+
+# ▶️ Menjalankan Program
+
+| Fitur | Perintah |
+|--------|--------|
+| Main Application | `java -cp build Main` |
+| Dashboard Admin | `java -cp build views.AdminDashboard` |
+| Form Lamaran | `java -cp build views.FormLamaranView` |
+| Riwayat Lamaran | `java -cp build views.RiwayatLamaranView` |
+
+---
+
+# 🗄️ Struktur Data
+
+### users.txt
 
 ```text
 ID|Nama|Age|Email|Alamat|NoHP|Role
 ```
 
-## pekerja.txt
+### pekerja.txt
 
 ```text
 ID|Nama|Keahlian|Pengalaman|Kontak
 ```
 
-## perusahaan.txt
+### perusahaan.txt
 
 ```text
 ID|Nama|Email|Alamat|NoTelepon|Deskripsi
 ```
 
-## lowongan.txt
+### lowongan.txt
 
 ```text
 ID|Perusahaan|Posisi|Deskripsi|Gaji|Status|TanggalDibuat
 ```
 
-## lamaran.txt
+### lamaran.txt
 
 ```text
 ID|Lowongan|Pekerja|CV|CoverLetter|Tanggal|Status
@@ -144,67 +315,85 @@ ID|Lowongan|Pekerja|CV|CoverLetter|Tanggal|Status
 
 ---
 
-# 📚 Konsep OOP yang Diterapkan
+# 📚 Implementasi OOP
 
-## 1. Abstraction
+## Abstraction
 
-Class `Entitas` digunakan sebagai abstract class yang menyediakan atribut dasar bagi entitas dalam sistem.
+Menggunakan abstract class:
 
-## 2. Inheritance
+```java
+Entitas
+```
 
-Class yang mewarisi `Entitas`:
-
-* Pekerja
-* Perusahaan
-* LowonganPekerjaan
-
-## 3. Encapsulation
-
-Penggunaan:
-
-* Private Attribute
-* Getter dan Setter
-
-## 4. Association
-
-Class `Lamaran` berelasi dengan:
-
-* Pekerja
-* LowonganPekerjaan
-* StatusLamaran
-
-## 5. Enumeration
-
-### Role
-
-* ADMIN
-* STAFF
-* MANAGER
-* WORKER
-
-### StatusLamaran
-
-* DIAJUKAN
-* DIREVIEW
-* DITERIMA
-* DITOLAK
-* DIBATALKAN
-
-## 6. Exception Handling
-
-Custom exception:
-
-* InvalidLamaranException
-* InvalidStatusTransitionException
-
-## 7. MVC Pattern
-
-* Model
-* View
-* Controller
+Sebagai dasar bagi entitas sistem.
 
 ---
 
-## 📝 Terakhir Diperbarui
+## Inheritance
 
-Juni 2026
+Class yang mewarisi `Entitas`:
+
+- Pekerja
+- Perusahaan
+- LowonganPekerjaan
+
+---
+
+## Encapsulation
+
+Seluruh atribut menggunakan access modifier:
+
+```java
+private
+```
+
+dan diakses melalui getter/setter.
+
+---
+
+## Association
+
+Class `Lamaran` berelasi dengan:
+
+- Pekerja
+- LowonganPekerjaan
+- StatusLamaran
+
+---
+
+## Exception Handling
+
+Custom Exception:
+
+- InvalidLamaranException
+- InvalidStatusTransitionException
+
+---
+
+# 🛠️ Teknologi
+
+| Teknologi | Keterangan |
+|------------|------------|
+| Java 8+ | Bahasa Pemrograman |
+| Java Swing | GUI Framework |
+| MVC Pattern | Arsitektur Aplikasi |
+| TXT File | Penyimpanan Data |
+| Git | Version Control |
+| GitHub | Repository Hosting |
+| JCalendar | Date Picker Library |
+
+---
+
+# 📄 Lisensi
+
+Project ini dikembangkan untuk keperluan akademik dalam Mata Kuliah Pemrograman Berorientasi Objek (PBO).
+
+---
+
+<div align="center">
+
+### ☕ CariKerja Team
+
+Politeknik Negeri Madiun • 2026
+
+</div>

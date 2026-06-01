@@ -152,6 +152,15 @@ public class LowonganPekerjaanController {
         return null;
     }
 
+    public LowonganPekerjaan getLowongan(int id) {
+        for (LowonganPekerjaan l : lowonganList) {
+            if (l.getId() == id) {
+                return l;
+            }
+        }
+        return null;
+    }
+
     public boolean addLowongan(String perusahaanNama,
                                String judul,
                                String deskripsi,

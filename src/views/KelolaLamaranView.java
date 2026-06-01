@@ -1,17 +1,24 @@
 package views;
 
+import controllers.LamaranController;
+import models.Lamaran;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
 
 public class KelolaLamaranView extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     private JButton btnProcess, btnAccept, btnReject, btnRefresh;
+    private LamaranController lamaranController;
 
-    public KelolaLamaranView() {
+    public KelolaLamaranView(LamaranController lamaranController) {
+        this.lamaranController = lamaranController;
+        
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -74,7 +81,26 @@ public class KelolaLamaranView extends JPanel {
             else JOptionPane.showMessageDialog(this, "Lamaran ditolak (simulasi)");
         });
         btnRefresh.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Data akan dimuat ulang (simulasi)");
+            loadData();
         });
+        
+        // Load data awal
+        loadData();
+    }
+    
+    private void loadData() {
+        tableModel.setRowCount(0);
+        List<Lamaran> lamaranList = lamaranController.getAllApplications();
+        
+        for (Lamaran lamaran : lamaranList) {
+            tableModel.addRow(new Object[]{
+                lamaran.getId(),
+                lamaran.getPekerja().getNama(),
+                lamaran.getLowongan().getJudul(),
+                lamaran.getStatus(),
+                lamaran.getTanggalLamaran(),
+                lamaran.getCvPath()
+            });
+        }
     }
 }

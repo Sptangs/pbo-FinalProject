@@ -15,17 +15,19 @@ Aplikasi desktop berbasis Java Swing untuk mengelola lowongan pekerjaan, lamaran
 - JUnit (Unit Testing - manual)
 
 ## 📂 Struktur Proyek
+```text
 pbo-FinalProject/
-├── data/ # File teks penyimpanan data (users.txt, perusahaan.txt, lowongan.txt)
-├── lib/ # Library eksternal (jcalendar.jar)
+├── data/           # File teks penyimpanan data (users.txt, perusahaan.txt, lowongan.txt)
+├── lib/            # Library eksternal (jcalendar.jar)
 ├── src/
-│ ├── controllers/ # Logika bisnis (UserController, LamaranController, dll)
-│ ├── models/ # Kelas entitas (User, Perusahaan, Lamaran, dll)
-│ ├── views/ # GUI (AdminDashboard, UserManagementPanel, FormLamaranView, dll)
-│ ├── exceptions/ # Kelas exception kustom
-│ ├── utils/ # Utility classes (DateUtil, LoggerUtil)
-│ └── validators/ # Validator (LamaranValidator)
-└── build/ # Hasil kompilasi (diabaikan oleh Git)
+│   ├── controllers/ # Logika bisnis (UserController, LamaranController, dll)
+│   ├── models/      # Kelas entitas (User, Perusahaan, Lamaran, dll)
+│   ├── views/       # GUI (AdminDashboard, UserManagementPanel, FormLamaranView, dll)
+│   ├── exceptions/  # Kelas exception kustom
+│   ├── utils/       # Utility classes (DateUtil, LoggerUtil)
+│   └── validators/  # Validator (LamaranValidator)
+└── build/          # Hasil kompilasi (diabaikan oleh Git)
+```
 
 text
 

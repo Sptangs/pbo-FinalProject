@@ -2,8 +2,13 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +21,17 @@ import models.StatusLamaran;
 public class LamaranController {
 
     private final List<Lamaran> applicationList;
+    private final LowonganPekerjaanController lowonganController;
 
     private String message;
 
-    public LamaranController() {
+    public LamaranController(LowonganPekerjaanController lowonganController) {
 
         applicationList = new ArrayList<>();
-
+        this.lowonganController = lowonganController;
         message = "";
+        
+        loadFromTxt();
     }
 
     public boolean addApplication(
@@ -116,6 +124,7 @@ public class LamaranController {
 
             message = "Application successfully added";
 
+            saveToTxt();
             return true;
 
         } catch (IllegalArgumentException e) {
@@ -130,6 +139,78 @@ public class LamaranController {
                     + e.getMessage();
 
             return false;
+        }
+    }
+
+    private void loadFromTxt() {
+        try {
+            File file = new File("data/lamaran.txt");
+            if (!file.exists()) {
+                return;
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+
+                if (data.length >= 6) {
+                    int lowonganId = Integer.parseInt(data[0]);
+                    String pekerjaNama = data[1];
+                    String cvPath = data[2];
+                    String coverLetter = data[3];
+                    StatusLamaran status = StatusLamaran.valueOf(data[4]);
+                    LocalDate tanggalLamaran = LocalDate.parse(data[5]);
+
+                    // Get Lowongan from controller
+                    LowonganPekerjaan lowongan = lowonganController.getLowongan(lowonganId);
+                    if (lowongan == null) continue;
+
+                    // Create temporary Pekerja object
+                    Pekerja pekerja = new Pekerja(
+                            999,                      // ID temporary
+                            pekerjaNama,
+                            30,                       // Umur valid 17-70
+                            "pekerja@example.com",    // Email
+                            "08123456789",            // Telepon
+                            "Indonesia",              // Alamat
+                            "Umum"                    // Keahlian
+                    );
+
+                    Lamaran lamaran = new Lamaran(lowongan, pekerja, cvPath, coverLetter);
+                    applicationList.add(lamaran);
+                }
+            }
+
+            reader.close();
+        } catch (Exception e) {
+            message = "ERROR LOAD LAMARAN: " + e.getMessage();
+            e.printStackTrace();
+        }
+    }
+
+    private void saveToTxt() {
+        try {
+            File file = new File("data/lamaran.txt");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+            for (Lamaran lamaran : applicationList) {
+                String line = lamaran.getLowongan().getId() + "," +
+                        lamaran.getPekerja().getNama() + "," +
+                        lamaran.getCvPath() + "," +
+                        lamaran.getCoverLetter().replaceAll(",", ";") + "," +
+                        lamaran.getStatus() + "," +
+                        LocalDate.now();
+
+                writer.write(line);
+                writer.newLine();
+            }
+
+            writer.close();
+        } catch (Exception e) {
+            message = "ERROR SAVE LAMARAN: " + e.getMessage();
+            e.printStackTrace();
         }
     }
 

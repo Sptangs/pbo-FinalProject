@@ -1,5 +1,8 @@
 package views;
 
+import controllers.LamaranController;
+import controllers.LowonganPekerjaanController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,6 +16,7 @@ public class AdminDashboard extends JFrame {
     private JButton btnLowongan;
     private JButton btnLamaran;
     private CardLayout cardLayout;
+    private LamaranController lamaranController;
 
     public AdminDashboard() {
         setTitle("Admin Dashboard - CariKerja");
@@ -20,6 +24,10 @@ public class AdminDashboard extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        // Inisialisasi controllers
+        LowonganPekerjaanController lowonganController = new LowonganPekerjaanController();
+        lamaranController = new LamaranController(lowonganController);
 
         sidebarPanel = new JPanel();
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
@@ -77,7 +85,7 @@ public class AdminDashboard extends JFrame {
 
         contentPanel.add(new LowonganManagementPanel(), "lowongan");
 
-        contentPanel.add(new KelolaLamaranView(), "lamaran");
+        contentPanel.add(new KelolaLamaranView(lamaranController), "lamaran");
 
         add(sidebarPanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);

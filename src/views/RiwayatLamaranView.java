@@ -18,13 +18,11 @@ public class RiwayatLamaranView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Panel utama putih
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         add(mainPanel, BorderLayout.CENTER);
 
-        // Tombol refresh di atas
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnRefresh = new JButton("Refresh");
         btnRefresh.setBackground(new Color(41, 128, 185));

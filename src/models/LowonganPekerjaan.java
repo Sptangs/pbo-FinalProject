@@ -223,23 +223,15 @@ public class LowonganPekerjaan extends Entitas {
     }
 
 
-    /**
-     * Mengecek apakah lowongan masih terbuka
-     */
     public boolean isTerbuka() {
         return aktif && !tanggalTutup.isBefore(LocalDate.now());
     }
 
-    /**
-     * Menutup lowongan
-     */
+
     public void tutupLowongan() {
         this.aktif = false;
     }
 
-    /**
-     * Membuka kembali lowongan (jika tanggal tutup masih valid)
-     */
     public void bukaKembali() {
         if (tanggalTutup.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Tidak bisa membuka lowongan yang sudah melewati tanggal tutup");
@@ -247,9 +239,6 @@ public class LowonganPekerjaan extends Entitas {
         this.aktif = true;
     }
 
-    /**
-     * Perpanjang tanggal tutup lowongan
-     */
     public void perpanjangTanggalTutup(LocalDate tanggalBaru) {
         if (tanggalBaru == null) {
             throw new IllegalArgumentException("Tanggal baru tidak boleh kosong");

@@ -15,11 +15,9 @@ import models.StatusLamaran;
 
 public class LamaranController {
 
-
     private final List<Lamaran> applicationList;
 
     private String message;
-
 
     public LamaranController() {
 
@@ -28,13 +26,11 @@ public class LamaranController {
         message = "";
     }
 
-
     public boolean addApplication(
             LowonganPekerjaan job,
             Pekerja worker,
             String cvPath,
-            String coverLetter
-    ) {
+            String coverLetter) {
 
         try {
 
@@ -66,13 +62,11 @@ public class LamaranController {
 
             for (Lamaran application : applicationList) {
 
-                boolean sameWorker =
-                        application.getPekerja()
-                                .equals(worker);
+                boolean sameWorker = application.getPekerja()
+                        .equals(worker);
 
-                boolean sameJob =
-                        application.getLowongan()
-                                .equals(job);
+                boolean sameJob = application.getLowongan()
+                        .equals(job);
 
                 if (sameWorker
                         && sameJob) {
@@ -82,9 +76,7 @@ public class LamaranController {
                 }
             }
 
-
-            File selectedFile =
-                    new File(cvPath);
+            File selectedFile = new File(cvPath);
 
             if (!selectedFile.exists()) {
 
@@ -92,47 +84,37 @@ public class LamaranController {
                         "CV file not found");
             }
 
-            String fileName =
-                    System.currentTimeMillis()
+            String fileName = System.currentTimeMillis()
                     + "_"
                     + selectedFile.getName();
 
-            File destinationFolder =
-                    new File("src/assets/cv");
+            File destinationFolder = new File("src/assets/cv");
 
             if (!destinationFolder.exists()) {
 
                 destinationFolder.mkdirs();
             }
 
-            File destinationFile =
-                    new File(
-                            destinationFolder,
-                            fileName
-                    );
+            File destinationFile = new File(
+                    destinationFolder,
+                    fileName);
 
             Files.copy(
                     selectedFile.toPath(),
                     destinationFile.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING
-            );
+                    StandardCopyOption.REPLACE_EXISTING);
 
-            String savedCvPath =
-                    destinationFile.getPath();
+            String savedCvPath = destinationFile.getPath();
 
-
-            Lamaran application =
-                    new Lamaran(
-                            job,
-                            worker,
-                            savedCvPath,
-                            coverLetter
-                    );
+            Lamaran application = new Lamaran(
+                    job,
+                    worker,
+                    savedCvPath,
+                    coverLetter);
 
             applicationList.add(application);
 
-            message =
-                    "Application successfully added";
+            message = "Application successfully added";
 
             return true;
 
@@ -144,14 +126,12 @@ public class LamaranController {
 
         } catch (IOException e) {
 
-            message =
-                    "Failed to upload CV: "
+            message = "Failed to upload CV: "
                     + e.getMessage();
 
             return false;
         }
     }
-
 
     public List<Lamaran> getAllApplications() {
 
@@ -159,8 +139,7 @@ public class LamaranController {
     }
 
     public Lamaran getApplicationById(
-            int id
-    ) {
+            int id) {
 
         for (Lamaran application : applicationList) {
 
@@ -173,13 +152,10 @@ public class LamaranController {
         return null;
     }
 
-
     public List<Lamaran> getApplicationByWorker(
-            Pekerja worker
-    ) {
+            Pekerja worker) {
 
-        List<Lamaran> result =
-                new ArrayList<>();
+        List<Lamaran> result = new ArrayList<>();
 
         for (Lamaran application : applicationList) {
 
@@ -194,11 +170,9 @@ public class LamaranController {
     }
 
     public List<Lamaran> getApplicationByJob(
-            LowonganPekerjaan job
-    ) {
+            LowonganPekerjaan job) {
 
-        List<Lamaran> result =
-                new ArrayList<>();
+        List<Lamaran> result = new ArrayList<>();
 
         for (Lamaran application : applicationList) {
 
@@ -213,16 +187,13 @@ public class LamaranController {
     }
 
     public List<Lamaran> getApplicationByStatus(
-            StatusLamaran status
-    ) {
+            StatusLamaran status) {
 
-        List<Lamaran> result =
-                new ArrayList<>();
+        List<Lamaran> result = new ArrayList<>();
 
         for (Lamaran application : applicationList) {
 
-            if (application.getStatus()
-                    == status) {
+            if (application.getStatus() == status) {
 
                 result.add(application);
             }
@@ -232,11 +203,9 @@ public class LamaranController {
     }
 
     public List<Lamaran> searchByWorkerName(
-            String keyword
-    ) {
+            String keyword) {
 
-        List<Lamaran> result =
-                new ArrayList<>();
+        List<Lamaran> result = new ArrayList<>();
 
         if (keyword == null) {
 
@@ -245,10 +214,9 @@ public class LamaranController {
 
         for (Lamaran application : applicationList) {
 
-            String name =
-                    application.getPekerja()
-                            .getNama()
-                            .toLowerCase();
+            String name = application.getPekerja()
+                    .getNama()
+                    .toLowerCase();
 
             if (name.contains(
                     keyword.toLowerCase())) {
@@ -261,11 +229,9 @@ public class LamaranController {
     }
 
     public List<Lamaran> searchByJobTitle(
-            String keyword
-    ) {
+            String keyword) {
 
-        List<Lamaran> result =
-                new ArrayList<>();
+        List<Lamaran> result = new ArrayList<>();
 
         if (keyword == null) {
 
@@ -274,10 +240,9 @@ public class LamaranController {
 
         for (Lamaran application : applicationList) {
 
-            String title =
-                    application.getLowongan()
-                            .getJudul()
-                            .toLowerCase();
+            String title = application.getLowongan()
+                    .getJudul()
+                    .toLowerCase();
 
             if (title.contains(
                     keyword.toLowerCase())) {
@@ -289,10 +254,8 @@ public class LamaranController {
         return result;
     }
 
-
     public boolean processApplication(
-            Lamaran application
-    ) {
+            Lamaran application) {
 
         try {
 
@@ -302,8 +265,7 @@ public class LamaranController {
                         "Application not found");
             }
 
-            if (application.getStatus()
-                    != StatusLamaran.DIAJUKAN) {
+            if (application.getStatus() != StatusLamaran.DIAJUKAN) {
 
                 throw new IllegalArgumentException(
                         "Only submitted applications can be reviewed");
@@ -311,8 +273,7 @@ public class LamaranController {
 
             application.processApplication();
 
-            message =
-                    "Application successfully processed";
+            message = "Application successfully processed";
 
             return true;
 
@@ -325,8 +286,7 @@ public class LamaranController {
     }
 
     public boolean acceptApplication(
-            Lamaran application
-    ) {
+            Lamaran application) {
 
         try {
 
@@ -336,8 +296,7 @@ public class LamaranController {
                         "Application not found");
             }
 
-            if (application.getStatus()
-                    != StatusLamaran.DIREVIEW) {
+            if (application.getStatus() != StatusLamaran.DIREVIEW) {
 
                 throw new IllegalArgumentException(
                         "Application must be reviewed first");
@@ -345,8 +304,7 @@ public class LamaranController {
 
             application.acceptApplication();
 
-            message =
-                    "Application successfully accepted";
+            message = "Application successfully accepted";
 
             return true;
 
@@ -360,8 +318,7 @@ public class LamaranController {
 
     public boolean rejectApplication(
             Lamaran application,
-            String reason
-    ) {
+            String reason) {
 
         try {
 
@@ -371,8 +328,7 @@ public class LamaranController {
                         "Application not found");
             }
 
-            if (application.getStatus()
-                    != StatusLamaran.DIREVIEW) {
+            if (application.getStatus() != StatusLamaran.DIREVIEW) {
 
                 throw new IllegalArgumentException(
                         "Application must be reviewed first");
@@ -387,8 +343,7 @@ public class LamaranController {
 
             application.rejectApplication(reason);
 
-            message =
-                    "Application successfully rejected";
+            message = "Application successfully rejected";
 
             return true;
 
@@ -400,12 +355,10 @@ public class LamaranController {
         }
     }
 
-
     public boolean updateApplication(
             Lamaran application,
             String cvPath,
-            String coverLetter
-    ) {
+            String coverLetter) {
 
         try {
 
@@ -441,8 +394,7 @@ public class LamaranController {
             application.setCoverLetter(
                     coverLetter);
 
-            message =
-                    "Application successfully updated";
+            message = "Application successfully updated";
 
             return true;
 
@@ -454,10 +406,8 @@ public class LamaranController {
         }
     }
 
-
     public boolean deleteApplication(
-            Lamaran application
-    ) {
+            Lamaran application) {
 
         try {
 
@@ -467,9 +417,8 @@ public class LamaranController {
                         "Application not found");
             }
 
-            boolean success =
-                    applicationList.remove(
-                            application);
+            boolean success = applicationList.remove(
+                    application);
 
             if (!success) {
 
@@ -477,8 +426,7 @@ public class LamaranController {
                         "Application deletion failed");
             }
 
-            message =
-                    "Application successfully deleted";
+            message = "Application successfully deleted";
 
             return true;
 
@@ -489,7 +437,6 @@ public class LamaranController {
             return false;
         }
     }
-
 
     public int getTotalApplications() {
 

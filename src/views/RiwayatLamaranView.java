@@ -31,12 +31,10 @@ public class RiwayatLamaranView extends JFrame {
         topPanel.add(btnRefresh);
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
-        // Tabel riwayat lamaran
         String[] columns = {"ID", "Nama Lowongan", "Perusahaan", "Tanggal Lamaran", "Status", "CV"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
 
-        // Atur alignment center
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < table.getColumnCount(); i++) {
@@ -47,9 +45,7 @@ public class RiwayatLamaranView extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Event refresh (sementara hanya contoh)
         btnRefresh.addActionListener(e -> {
-            // Nanti diisi panggilan controller untuk load data
             JOptionPane.showMessageDialog(this, "Data akan dimuat dari database (simulasi)");
         });
 

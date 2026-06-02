@@ -1,77 +1,83 @@
-// package controllers;
+package controllers;
 
-// import java.util.ArrayList;
-// import models.User;
+import java.util.ArrayList;
+import java.util.List;
 
-// public class UserController {
+import models.User;
+import models.User.Role;
 
-//     private ArrayList<User> listUser = new ArrayList<>();
+public class UserController {
+    
+    private List<User> listUser = new ArrayList<>();
 
-//     public void AddUser(int id,
-//                             String nama,
-//                             String email,
-//                             String password,
-//                             String alamat) {
+    public void addUser(User userBaru) {
+        listUser.add(userBaru);
+        System.out.println("Data Berhasil ditambahkan!");
+    }
 
-//         User user = new User();
+    public boolean addUser(String nama, int age, String email, String password, String alamat, String noHp, Role role) {
+        try {
+            User user = new User(nama, age, email, password, alamat, noHp, role);
+            listUser.add(user);
+            System.out.println("Data Berhasil ditambahkan!");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error menambah user: " + e.getMessage());
+            return false;
+        }
+    }
 
-//         user.mengisiData(id, nama, email, password, alamat);
+    public User getByIdUser(int idCari) {
+        for (User u : listUser) {
+            if (u.getIdUser() == idCari) { 
+                return u;
+            }
+        }
+        return null;
+    }
 
-//         listUser.add(user);
+    public boolean updateUser(int idCari, String namaBaru, int ageBaru, String emailBaru, String passwordBaru, String alamatBaru, String noHpBaru, Role roleBaru) {
+        
+        User user = getByIdUser(idCari);
+        
+        if (user == null) {
+            System.out.println("User tidak ditemukan!");
+            return false; 
+        }
 
-//         System.out.println("User berhasil ditambahkan!");
-//     }
+        if (emailBaru == null || !emailBaru.contains("@")) {
+            System.out.println("Email tidak valid! Harus mengandung '@'");
+            return false; 
+        }
 
-//     public void GetUser() {
+        if (!noHpBaru.matches("[0-9]+")) {
+            System.out.println("Nomor HP hanya boleh angka!");
+            return false; 
+        }
 
-//         if (listUser.isEmpty()) {
+        user.setNama(namaBaru);
+        user.setAge(ageBaru);
+        user.setEmail(emailBaru);
+        user.setPassword(passwordBaru);
+        user.setAlamat(alamatBaru);
+        user.setNoHp(noHpBaru);
+        user.setRole(roleBaru);
 
-//             System.out.println("Data user kosong!");
-//             return;
-//         }
+        System.out.println("User berhasil diupdate!");
+        return true; 
+    }
 
-//         for (User user : listUser) {
-
-//             user.tampilInfo();
-//         }
-//     }
-
-//     public void updateUser(int idCari,
-//                             String namaBaru,
-//                             String emailBaru,
-//                             String passwordBaru,
-//                             String alamatBaru) {
-
-//         for (User user : listUser) {
-
-//             if (user.id_user == idCari) {
-
-//                 user.nama = namaBaru;
-//                 user.email = emailBaru;
-//                 user.password = passwordBaru;
-//                 user.alamat = alamatBaru;
-
-//                 System.out.println("Data user berhasil diupdate!");
-//                 return;
-//             }
-//         }
-
-//         System.out.println("User tidak ditemukan!");
-//     }
-
-//     public void deleteUser(int idCari) {
-
-//         for (User user : listUser) {
-
-//             if (user.id_user == idCari) {
-
-//                 listUser.remove(user);
-
-//                 System.out.println("User berhasil dihapus!");
-//                 return;
-//             }
-//         }
-
-//         System.out.println("User tidak ditemukan!");
-//     }
-// }
+    public void deleteUser(int idCari) {
+        User user = getByIdUser(idCari);
+        if (user != null) {
+            listUser.remove(user);
+            System.out.println("Data Berhasil dihapus!");
+        } else {
+            System.out.println("User tidak ditemukan!");
+        }
+    }
+    
+    public List<User> getAllUsers() {
+        return listUser;
+    }
+}

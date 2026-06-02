@@ -2,7 +2,7 @@ package views;
 
 import controllers.LamaranController;
 import controllers.LowonganPekerjaanController;
-import controllers.PekerjaController;
+// import controllers.PekerjaController;
 import models.Pekerja;
 import models.LowonganPekerjaan;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class FormLamaranView extends JFrame {
     private LowonganPekerjaanController lowonganController;
     private LamaranController lamaranController;
-    private PekerjaController pekerjaController;
+    // private PekerjaController pekerjaController;
     private JTable table;
     private DefaultTableModel tableModel;
     private JButton btnSubmitLamaran;
@@ -27,7 +27,7 @@ public class FormLamaranView extends JFrame {
     public FormLamaranView() {
         lowonganController = new LowonganPekerjaanController();
         lamaranController = new LamaranController(lowonganController);
-        pekerjaController = new PekerjaController();
+        // pekerjaController = new PekerjaController();
 
         setTitle("Cari dan Lamar Lowongan Pekerjaan");
         setSize(1200, 600);

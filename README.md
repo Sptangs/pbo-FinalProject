@@ -1,50 +1,54 @@
-# CariKerja - Aplikasi Manajemen Lowongan Pekerjaan
+# 💼 CariKerja
 
-Aplikasi desktop berbasis Java untuk mengelola lowongan pekerjaan, pelamaran kerja, dan data pengguna menggunakan konsep Pemrograman Berorientasi Objek (PBO).
+<div align="center">
 
----
+### Job Application Management System
 
-## 👨‍💻 Pembuat
+Sistem Manajemen Lowongan dan Lamaran Kerja Berbasis Java Desktop  
+Dibangun menggunakan prinsip **Object-Oriented Programming (OOP)** dan arsitektur **MVC (Model-View-Controller)**.
 
-- Septian Angga Saputra -> 254311014
-- Dodo Fansyuri Andrian
-- Krisna Wahyu
+![Java](https://img.shields.io/badge/Java-8+-orange)
+![Swing](https://img.shields.io/badge/GUI-Java%20Swing-blue)
+![Architecture](https://img.shields.io/badge/Architecture-MVC-green)
+![Storage](https://img.shields.io/badge/Database-TXT%20File-lightgrey)
 
----
-
-# 📋 Daftar Isi
-
-- [Tentang Project](#-tentang-project)
-- [Fitur Utama](#-fitur-utama)
-- [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
-- [Struktur Project](#-struktur-project)
-- [Instalasi dan Setup](#-instalasi-dan-setup)
-- [Cara Menggunakan](#-cara-menggunakan)
-- [Struktur Penyimpanan Data](#-struktur-penyimpanan-data)
-- [Konsep OOP yang Diterapkan](#-konsep-oop-yang-diterapkan)
-- [Troubleshooting](#-troubleshooting)
-- [Lisensi](#-lisensi)
+</div>
 
 ---
 
-# 📌 Tentang Project
+# 📖 Deskripsi
 
-**CariKerja** adalah aplikasi desktop berbasis Java yang dirancang untuk membantu proses pencarian kerja dan manajemen lowongan pekerjaan dalam satu sistem terintegrasi.
+**CariKerja** merupakan aplikasi desktop berbasis Java yang dirancang untuk membantu proses pengelolaan lowongan pekerjaan dan pelamaran kerja dalam satu sistem terintegrasi.
 
-Project ini dibuat sebagai tugas akhir mata kuliah **Pemrograman Berorientasi Objek (PBO)** dan menerapkan berbagai konsep OOP seperti:
+Aplikasi ini dikembangkan sebagai **Tugas Akhir Mata Kuliah Pemrograman Berorientasi Objek (PBO)** dengan menerapkan konsep-konsep utama OOP seperti:
 
+- Abstraction
 - Inheritance
 - Encapsulation
-- Polymorphism
+- Association
+- Enumeration
 - Exception Handling
-- MVC (Model View Controller)
+- MVC Pattern
 
-Aplikasi ini memungkinkan:
+Sistem memungkinkan administrator untuk mengelola data pengguna, perusahaan, lowongan pekerjaan, serta memproses lamaran kerja yang masuk.
 
-- **Pekerja** mencari dan melamar pekerjaan
-- **Perusahaan** membuat dan mengelola lowongan
-- **Admin** mengelola seluruh sistem
-- **Manager/HR** memproses data pelamaran
+---
+
+# 👨‍💻 Tim Pengembang
+
+| Nama | NIM | Role | GitHub |
+|--------|--------|--------|--------|
+| Septian Angga Saputra | 254311014 | Class Architect & Repo Master | [@Sptangs](https://github.com/Sptangs) |
+| Dodo Fansyuri Andrian | 254311023 | Data & Logic Engineer | [@todaxyz](https://github.com/todaxyz) |
+| Krisna Wahyu Indra Kusuma | 254311029 | UI & Robustness Engineer, QA | [@12Krisna](https://github.com/12Krisna) |
+
+---
+
+# 🏗️ Class Diagram
+
+Diagram berikut menggambarkan struktur class serta hubungan antar entitas pada sistem CariKerja.
+
+![Class Diagram](https://github.com/user-attachments/assets/7b9f4f8e-eb43-4c9e-bc02-21b61f4c89af)
 
 ---
 
@@ -52,321 +56,344 @@ Aplikasi ini memungkinkan:
 
 ## 👤 Manajemen Pengguna
 
-- Registrasi pengguna
-- Login dan autentikasi
-- Manajemen role pengguna
-- Edit profil pengguna
-- Kelola data kontak dan alamat
+- Tambah User
+- Edit User
+- Hapus User
+- Pengelolaan Role Pengguna
+
+Role yang tersedia:
+
+- ADMIN
+- STAFF
+- MANAGER
+- WORKER
+
+---
+
+## 👨‍💼 Manajemen Pekerja
+
+- CRUD Data Pekerja
+- Pengelolaan Profil Pekerja
+- Penyimpanan Data ke File TXT
+
+---
+
+## 🏢 Manajemen Perusahaan
+
+- CRUD Data Perusahaan
+- Pengelolaan Informasi Perusahaan
+- Penyimpanan Data ke File TXT
 
 ---
 
 ## 💼 Manajemen Lowongan Pekerjaan
 
-- Menambah lowongan pekerjaan
-- Mengedit lowongan pekerjaan
-- Menentukan kualifikasi pekerjaan
-- Menentukan rentang gaji
-- Aktivasi/nonaktif lowongan
-- Pencarian lowongan
+- Tambah Lowongan
+- Edit Lowongan
+- Hapus Lowongan
+- Pengelolaan Informasi Lowongan
+- Pengaturan Status Lowongan
 
 ---
 
 ## 📨 Sistem Pelamaran
 
-- Submit lamaran pekerjaan
-- Upload CV digital
-- Menulis surat pengantar
-- Riwayat pelamaran
-- Tracking status lamaran
+- Pemilihan Lowongan
+- Upload CV
+- Submit Lamaran
+- Tracking Status Lamaran
+
+Status Lamaran:
+
+```text
+DIAJUKAN
+DIREVIEW
+DITERIMA
+DITOLAK
+DIBATALKAN
+```
 
 ---
 
-## 🛠 Dashboard Admin
+## 📊 Dashboard Admin
 
-- Kelola data pengguna
-- Kelola data perusahaan
-- Monitoring lowongan
-- Validasi pelamaran
-- Monitoring aktivitas sistem
+Dashboard terintegrasi untuk:
 
----
-
-## ✅ Validasi dan Exception Handling
-
-- Validasi form input
-- Validasi status pelamaran
-- Custom exception
-- Logging aktivitas
+- Kelola User
+- Kelola Pekerja
+- Kelola Perusahaan
+- Kelola Lowongan
+- Monitoring Lamaran
 
 ---
 
-# 🛠 Teknologi yang Digunakan
+# 🏛️ Arsitektur MVC
 
-| Teknologi | Keterangan |
-|---|---|
-| Java 8+ | Bahasa pemrograman utama |
-| Java Swing | GUI Desktop |
-| MVC Pattern | Arsitektur aplikasi |
-| TXT File Storage | Penyimpanan data |
-| Git | Version control |
+```text
+┌─────────────┐
+│    Model    │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Controller  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│    View     │
+└─────────────┘
+```
+
+### Model
+
+Menyimpan data dan representasi objek bisnis.
+
+Contoh:
+
+- User
+- Pekerja
+- Perusahaan
+- LowonganPekerjaan
+- Lamaran
+
+### Controller
+
+Menangani logika bisnis dan proses CRUD.
+
+Contoh:
+
+- UserController
+- PekerjaController
+- PerusahaanController
+- LowonganPekerjaanController
+- LamaranController
+
+### View
+
+Menyediakan antarmuka pengguna berbasis Java Swing.
+
+Contoh:
+
+- AdminDashboard
+- FormLamaranView
+- RiwayatLamaranView
 
 ---
 
 # 📁 Struktur Project
 
-```bash
+```text
 CariKerja/
-├── src/
-│   ├── Main.java
-│   │
-│   ├── models/
-│   │   ├── Entitas.java
-│   │   ├── User.java
-│   │   ├── Pekerja.java
-│   │   ├── Perusahaan.java
-│   │   ├── LowonganPekerjaan.java
-│   │   ├── Lamaran.java
-│   │   └── StatusLamaran.java
-│   │
-│   ├── controllers/
-│   │   ├── UserController.java
-│   │   ├── PekerjaController.java
-│   │   ├── PerusahaanController.java
-│   │   ├── LowonganPekerjaanController.java
-│   │   └── LamaranController.java
-│   │
-│   ├── views/
-│   │   ├── AdminDashboard.java
-│   │   ├── UserManagementPanel.java
-│   │   ├── PekerjaManagementPanel.java
-│   │   ├── PerusahaanManagementPanel.java
-│   │   ├── LowonganManagementPanel.java
-│   │   ├── FormLamaranView.java
-│   │   ├── KelolaLamaranView.java
-│   │   └── RiwayatLamaranView.java
-│   │
-│   ├── exceptions/
-│   │   ├── InvalidLamaranException.java
-│   │   └── InvalidStatusTransitionException.java
-│   │
-│   ├── validators/
-│   │   └── LamaranValidator.java
-│   │
-│   ├── utils/
-│   │   ├── DateUtil.java
-│   │   └── LoggerUtil.java
-│   │
-│   └── asset/
-│       └── cv/
+│
+├── .gitignore
+├── README.md
 │
 ├── build/
+│
 ├── data/
 │   ├── users.txt
+│   ├── pekerja.txt
 │   ├── perusahaan.txt
-│   └── lowongan.txt
+│   ├── lowongan.txt
+│   └── lamaran.txt
 │
 ├── lib/
-└── README.md
+│   └── jcalendar-0.8.1.jar
+│
+└── src/
+    │
+    ├── Main.java
+    │
+    ├── asset/
+    │   └── cv/
+    │
+    ├── assets/
+    │   └── cv/
+    │
+    ├── models/
+    │   ├── Entitas.java
+    │   ├── User.java
+    │   ├── Pekerja.java
+    │   ├── Perusahaan.java
+    │   ├── LowonganPekerjaan.java
+    │   ├── Lamaran.java
+    │   └── StatusLamaran.java
+    │
+    ├── controllers/
+    │   ├── UserController.java
+    │   ├── PekerjaController.java
+    │   ├── PerusahaanController.java
+    │   ├── LowonganPekerjaanController.java
+    │   └── LamaranController.java
+    │
+    ├── views/
+    │   ├── AdminDashboard.java
+    │   ├── UserManagementPanel.java
+    │   ├── PekerjaManagementPanel.java
+    │   ├── PerusahaanManagementPanel.java
+    │   ├── LowonganManagementPanel.java
+    │   ├── FormLamaranView.java
+    │   ├── KelolaLamaranView.java
+    │   └── RiwayatLamaranView.java
+    │
+    ├── exceptions/
+    │   ├── InvalidLamaranException.java
+    │   └── InvalidStatusTransitionException.java
+    │
+    ├── validators/
+    │   └── LamaranValidator.java
+    │
+    └── utils/
+        ├── DateUtil.java
+        └── LoggerUtil.java
 ```
 
 ---
 
-# 💻 Instalasi dan Setup
+# ⚙️ Instalasi
 
-## 📌 Prasyarat
-
-Pastikan perangkat telah terinstall:
-
-- Java Development Kit (JDK) 8 atau lebih baru
-- Git (opsional)
-- Terminal / CMD
-
----
-
-## 📥 Clone Repository
+## Clone Repository
 
 ```bash
-git clone <repository-url>
-cd CariKerja
+git clone https://github.com/Sptangs/pbo-FinalProject.git
+cd pbo-FinalProject
 ```
 
 ---
 
-## ⚙ Compile Project
+# 🔨 Build Project
 
 ```bash
-javac -d build src/Main.java src/views/*.java src/models/*.java src/controllers/*.java src/exceptions/*.java src/validators/*.java src/utils/*.java
+javac -cp "lib/jcalendar-0.8.1.jar" -d build src/Main.java src/models/*.java src/controllers/*.java src/views/*.java src/exceptions/*.java src/validators/*.java src/utils/*.java
 ```
 
 ---
 
-## ▶ Menjalankan Program
+# ▶️ Menjalankan Program
 
-```bash
-cd build
-java Main
+| Fitur | Perintah |
+|--------|--------|
+| Main Application | `java -cp build Main` |
+| Dashboard Admin | `java -cp build views.AdminDashboard` |
+| Form Lamaran | `java -cp build views.FormLamaranView` |
+| Riwayat Lamaran | `java -cp build views.RiwayatLamaranView` |
+
+---
+
+# 🗄️ Struktur Data
+
+### users.txt
+
+```text
+ID|Nama|Age|Email|Alamat|NoHP|Role
 ```
 
----
+### pekerja.txt
 
-# 🚀 Cara Menggunakan
-
-## 🔐 Login Sistem
-
-1. Jalankan aplikasi
-2. Masukkan email dan password
-3. Login sesuai role pengguna
-
----
-
-## 👷 Untuk Pekerja
-
-1. Cari lowongan pekerjaan
-2. Baca detail lowongan
-3. Klik tombol **Lamar**
-4. Upload CV
-5. Isi surat pengantar
-6. Submit lamaran
-7. Lihat status pelamaran
-
----
-
-## 🏢 Untuk Perusahaan
-
-1. Tambahkan lowongan pekerjaan
-2. Edit lowongan
-3. Kelola pelamar
-4. Proses pelamaran
-
----
-
-## 👨‍💼 Untuk Admin
-
-1. Kelola pengguna
-2. Kelola perusahaan
-3. Monitoring lowongan
-4. Validasi data
-5. Monitoring sistem
-
----
-
-# 🗄 Struktur Penyimpanan Data
-
-## users.txt
-
-```txt
-ID|Nama|Email|Password|Alamat|NoHp|Role|Age
+```text
+ID|Nama|Keahlian|Pengalaman|Kontak
 ```
 
----
+### perusahaan.txt
 
-## perusahaan.txt
-
-```txt
-ID|Nama|Email|Alamat|Nomor|Deskripsi
+```text
+ID|Nama|Email|Alamat|NoTelepon|Deskripsi
 ```
 
----
+### lowongan.txt
 
-## lowongan.txt
-
-```txt
+```text
 ID|Perusahaan|Posisi|Deskripsi|Gaji|Status|TanggalDibuat
 ```
 
----
+### lamaran.txt
 
-# 📚 Konsep OOP yang Diterapkan
-
-## 1. Inheritance
-
-Class `User` menjadi parent class dari:
-
-- `Pekerja`
-- `Perusahaan`
-
----
-
-## 2. Encapsulation
-
-Penggunaan:
-
-- Private attribute
-- Getter dan Setter
-
----
-
-## 3. Polymorphism
-
-Method overriding pada model dan controller.
-
----
-
-## 4. Exception Handling
-
-Menggunakan custom exception:
-
-- `InvalidLamaranException`
-- `InvalidStatusTransitionException`
-
----
-
-## 5. MVC Pattern
-
-Pemisahan antara:
-
-- Model
-- View
-- Controller
-
-Agar struktur aplikasi lebih rapi dan mudah dikembangkan.
-
----
-
-# 🐛 Troubleshooting
-
-## ❌ Error "Cannot find symbol"
-
-### Solusi:
-
-- Pastikan semua file `.java` berada di folder yang benar
-- Compile dari root project
-
----
-
-## ❌ Data Tidak Tersimpan
-
-### Solusi:
-
-- Pastikan folder `data/` tersedia
-- Pastikan file `.txt` sudah dibuat
-
----
-
-## ❌ GUI Tidak Muncul
-
-### Solusi:
-
-```bash
-java -Dswing.systemlaf=javax.swing.plaf.windows.WindowsLookAndFeel Main
+```text
+ID|Lowongan|Pekerja|CV|CoverLetter|Tanggal|Status
 ```
+
+---
+
+# 📚 Implementasi OOP
+
+## Abstraction
+
+Menggunakan abstract class:
+
+```java
+Entitas
+```
+
+Sebagai dasar bagi entitas sistem.
+
+---
+
+## Inheritance
+
+Class yang mewarisi `Entitas`:
+
+- Pekerja
+- Perusahaan
+- LowonganPekerjaan
+
+---
+
+## Encapsulation
+
+Seluruh atribut menggunakan access modifier:
+
+```java
+private
+```
+
+dan diakses melalui getter/setter.
+
+---
+
+## Association
+
+Class `Lamaran` berelasi dengan:
+
+- Pekerja
+- LowonganPekerjaan
+- StatusLamaran
+
+---
+
+## Exception Handling
+
+Custom Exception:
+
+- InvalidLamaranException
+- InvalidStatusTransitionException
+
+---
+
+# 🛠️ Teknologi
+
+| Teknologi | Keterangan |
+|------------|------------|
+| Java 8+ | Bahasa Pemrograman |
+| Java Swing | GUI Framework |
+| MVC Pattern | Arsitektur Aplikasi |
+| TXT File | Penyimpanan Data |
+| Git | Version Control |
+| GitHub | Repository Hosting |
+| JCalendar | Date Picker Library |
 
 ---
 
 # 📄 Lisensi
 
-Project ini dibuat untuk kebutuhan akademik dan pembelajaran.
-
-Silakan digunakan dan dikembangkan sesuai kebutuhan.
+Project ini dikembangkan untuk keperluan akademik dalam Mata Kuliah Pemrograman Berorientasi Objek (PBO).
 
 ---
 
-# 📧 Kontak
+<div align="center">
 
-Untuk pertanyaan dan masukan terkait project, silakan hubungi tim pengembang.
+### ☕ CariKerja Team
 
----
+Politeknik Negeri Madiun • 2026
 
-## 📝 Terakhir Diperbarui
-
-**Mei 2026**
+</div>

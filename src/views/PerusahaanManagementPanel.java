@@ -290,28 +290,27 @@ public class PerusahaanManagementPanel extends JPanel {
                 JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
+            try {
+                boolean success = controller.addPerusahaan(
+                        txtNama.getText(),
+                        txtAlamat.getText(),
+                        txtEmail.getText(),
+                        txtTelepon.getText(),
+                        txtBidang.getText(),
+                        txtDeskripsi.getText());
 
-            boolean success = controller.addPerusahaan(
-                    txtNama.getText(),
-                    txtAlamat.getText(),
-                    txtEmail.getText(),
-                    txtTelepon.getText(),
-                    txtBidang.getText(),
-                    txtDeskripsi.getText());
-
-            if (success) {
-
-                refreshTable();
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Data perusahaan berhasil ditambahkan!");
-
-            } else {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        controller.getMessage());
+                if (success) {
+                    refreshTable();
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Data perusahaan berhasil ditambahkan!");
+                } else {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            controller.getMessage());
+                }
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Validasi Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -376,32 +375,31 @@ public class PerusahaanManagementPanel extends JPanel {
                 JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
+            try {
+                int id = Integer.parseInt(
+                        tableModel.getValueAt(row, 0).toString());
 
-            int id = Integer.parseInt(
-                    tableModel.getValueAt(row, 0).toString());
+                boolean success = controller.editPerusahaan(
+                        id,
+                        txtNama.getText(),
+                        txtAlamat.getText(),
+                        txtEmail.getText(),
+                        txtTelepon.getText(),
+                        txtBidang.getText(),
+                        txtDeskripsi.getText());
 
-            boolean success = controller.editPerusahaan(
-                    id,
-                    txtNama.getText(),
-                    txtAlamat.getText(),
-                    txtEmail.getText(),
-                    txtTelepon.getText(),
-                    txtBidang.getText(),
-                    txtDeskripsi.getText());
-
-            if (success) {
-
-                refreshTable();
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Data berhasil diupdate!");
-
-            } else {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        controller.getMessage());
+                if (success) {
+                    refreshTable();
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Data berhasil diupdate!");
+                } else {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            controller.getMessage());
+                }
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Validasi Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -449,3 +447,4 @@ public class PerusahaanManagementPanel extends JPanel {
         }
     }
 }
+

@@ -41,36 +41,30 @@ public class AdminDashboard extends JFrame {
         sidebarPanel.add(titleLabel);
         sidebarPanel.add(Box.createVerticalStrut(30));
 
-        btnUser = createSidebarButton("👤 User");
+        btnUser = createSidebarButton("User");
         btnUser.addActionListener(e -> showUserPanel());
         sidebarPanel.add(btnUser);
         sidebarPanel.add(Box.createVerticalStrut(10));
 
-        btnPekerja = createSidebarButton("👨‍💼 Pekerja");
+        btnPekerja = createSidebarButton("Pekerja");
         btnPekerja.addActionListener(e -> showPekerjaPanel());
         sidebarPanel.add(btnPekerja);
         sidebarPanel.add(Box.createVerticalStrut(10));
 
-        btnPerusahaan = createSidebarButton("🏢 Perusahaan");
+        btnPerusahaan = createSidebarButton("Perusahaan");
         btnPerusahaan.addActionListener(e -> showPerusahaanPanel());
         sidebarPanel.add(btnPerusahaan);
         sidebarPanel.add(Box.createVerticalStrut(10));
 
-        btnLowongan = createSidebarButton("📋 Lowongan");
+        btnLowongan = createSidebarButton("Lowongan");
         btnLowongan.addActionListener(e -> showLowonganPanel());
         sidebarPanel.add(btnLowongan);
         sidebarPanel.add(Box.createVerticalStrut(10));
 
-        btnLamaran = createSidebarButton("📄 Lamaran");
+        btnLamaran = createSidebarButton("Lamaran");
         btnLamaran.addActionListener(e -> showLamaranPanel());
         sidebarPanel.add(btnLamaran);
         sidebarPanel.add(Box.createVerticalStrut(10));
-
-
-        JButton btnLogout = createSidebarButton("🚪 Logout");
-        btnLogout.addActionListener(e -> logout());
-        sidebarPanel.add(Box.createVerticalGlue());
-        sidebarPanel.add(btnLogout);
 
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
@@ -166,18 +160,6 @@ public class AdminDashboard extends JFrame {
         btnPekerja.setBackground(new Color(44, 62, 80));
         btnPerusahaan.setBackground(new Color(44, 62, 80));
         btnLowongan.setBackground(new Color(44, 62, 80));
-    }
-
-    private void logout() {
-        int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Anda yakin ingin logout?",
-                "Konfirmasi Logout",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-        }
     }
 
     public static void main(String[] args) {

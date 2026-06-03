@@ -405,7 +405,7 @@ public class UserManagementPanel extends JPanel {
                 JOptionPane.showMessageDialog(
                         this,
                         "Data berhasil diupdate!");
-
+//
             } catch (Exception e) {
 
                 JOptionPane.showMessageDialog(

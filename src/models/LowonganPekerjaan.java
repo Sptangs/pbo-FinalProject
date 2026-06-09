@@ -252,6 +252,13 @@ public class LowonganPekerjaan extends Entitas {
         this.tanggalTutup = tanggalBaru;
     }
 
+    public String tampilkanDetail() {
+    return "Judul: " + judul
+            + "\nPerusahaan: " + perusahaanNama
+            + "\nLokasi: " + lokasi
+            + "\nJenis: " + jenis;
+}
+
     @Override
     public String toString() {
         return "LowonganPekerjaan{" +

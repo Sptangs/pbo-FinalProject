@@ -1,3 +1,11 @@
+# 🚀 Update Versi 2.0: Fitur Pekerja VIP (Kategori Premium)
+
+Pembaruan Versi 2.0 ini menghadirkan fitur **Kategori Premium/Prioritas** ke dalam sistem CariKerja berupa penambahan entitas `PekerjaVIP`. Pembaruan ini mengimplementasikan arsitektur *Object-Oriented Programming* (OOP) tingkat lanjut, meliputi *Inheritance* (pewarisan dari superclass `Pekerja`) dan *Polymorphism* (modifikasi output detail pekerja serta penanganan proses I/O pada file teks secara dinamis).
+
+Selain itu, update ini mencakup optimasi *Collections* dengan penambahan **Fitur Filter** untuk menyaring dan menampilkan daftar Pekerja VIP secara spesifik. Untuk meningkatkan kestabilan (*robustness*) aplikasi, pembaruan ini juga menerapkan validasi input terintegrasi menggunakan *Exception Handling* guna mencegah aplikasi *crash* akibat kesalahan input dari pengguna.
+
+---
+
 # 💼 CariKerja
 
 <div align="center">

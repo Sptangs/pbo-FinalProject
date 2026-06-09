@@ -127,6 +127,18 @@ Dashboard terintegrasi untuk:
 
 ---
 
+## 🆕 Update Versi 2.0 – Fitur Lowongan Prioritas (Premium)
+
+Pada versi ini, kami menambahkan fitur **Lowongan Prioritas** yang memungkinkan admin menentukan tingkat prioritas lowongan (1: Biasa, 2: Penting, 3: Sangat Penting). Fitur ini meliputi:
+
+- **Subclass `LowonganPrioritas`** yang mewarisi `LowonganPekerjaan` dengan atribut `prioritas`.
+- **Polimorfisme**: Method `toString()` di-override untuk menampilkan informasi prioritas.
+- **Filter**: Menampilkan hanya lowongan dengan prioritas ≥ 2 (Penting dan Premium).
+- **Sorting**: Mengurutkan lowongan berdasarkan prioritas tertinggi.
+- **Custom Exception**: `PrioritasInvalidException` untuk memvalidasi input prioritas (1-3) agar aplikasi tidak crash.
+- **Antarmuka**: Tombol "Tambah Prioritas", "Filter Prioritas", "Urut Prioritas" di panel Manajemen Lowongan.
+
+> **Catatan**: Fitur ini hanya tersedia untuk role admin melalui menu Lowongan.
 # 🏛️ Arsitektur MVC
 
 ```text

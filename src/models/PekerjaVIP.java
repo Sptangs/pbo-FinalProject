@@ -51,3 +51,35 @@ public class PekerjaVIP extends Pekerja {
                " | Bonus Layanan: Rp" + bonusLayanan;
     }
 }
+
+//B-Untuk testing fitur PekerjaVIP.
+    public static void main(String[] args) {
+        System.out.println("=== UJI COBA FITUR PEKERJA VIP (VERSI 2.0) ===");
+
+        try {
+//Buat menambahkan data.
+            PekerjaVIP pekerjaTest = new PekerjaVIP(
+                    999,                     
+                    "Budi Santoso",             
+                    25,                        
+                    "budi.premium@email.com",   
+                    "081234567890",             
+                    "Jl. Pahlawan No. 10",      
+                    "Full-Stack Developer",     
+                    "Platinum",                
+                    1500000.0                  
+            );
+
+            System.out.println("Data Berhasil Dibuat!");
+            System.out.println(pekerjaTest.getInfo());
+            System.out.println("--------------------------------------------------");
+
+            System.out.println("Menguji Exception (Bonus Layanan Minus):");
+            pekerjaTest.setBonusLayanan(-50000); 
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Penanganan Error Berhasil Ditangkap: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error Umum: " + e.getMessage());
+        }
+    }

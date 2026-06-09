@@ -1,9 +1,9 @@
 package controllers;
 
-import models.Pekerja;
-
 import java.io.*;
-import java.util.ArrayList;
+import java.util.ArrayList; //B-Buat PekerjaVIP.
+import models.Pekerja;
+import models.PekerjaVIP;
 
 public class PekerjaController {
 
@@ -22,46 +22,77 @@ public class PekerjaController {
     public ArrayList<Pekerja> getAllPekerja() {
         return listPekerja;
     }
+// B-fitur baru
+    public ArrayList<Pekerja> filterPekerjaVIP() {
+        ArrayList<Pekerja> listVIP = new ArrayList<>();
+        for (Pekerja p : listPekerja) {
+            if (p instanceof PekerjaVIP) {
+                listVIP.add(p);
+            }
+        }
+        return listVIP;
+    }
+    public boolean addPekerjaVIP(
+            int idPekerja, String nama, int umur, String email,
+            String noTelepon, String alamat, String keahlian,
+            String tingkatVIP, double bonusLayanan) {
+        try {
+            if (nama.isEmpty() || email.isEmpty() || noTelepon.isEmpty() || 
+                alamat.isEmpty() || keahlian.isEmpty() || tingkatVIP.isEmpty()) {
+                message = "Semua field wajib diisi!";
+                return false;
+            }
+            if (umur < 17 || umur > 70) {
+                message = "Umur harus 17 - 70 tahun!";
+                return false;
+            }
 
-    private void loadFromTxt() {
+            PekerjaVIP pekerjaVIP = new PekerjaVIP(
+                    idPekerja, nama, umur, email, noTelepon, alamat, keahlian, tingkatVIP, bonusLayanan);
 
+            listPekerja.add(pekerjaVIP);
+            saveToTxt();
+
+            message = "Data Pekerja VIP berhasil ditambahkan!";
+            return true;
+        } catch (Exception e) {
+            message = "ERROR ADD VIP : " + e.getMessage();
+            e.printStackTrace();
+            return false;
+        }
+    }
+//B-E-Menambahkan fitur baru
+
+//B-Mengganti kode loadFromTXT.
+private void loadFromTxt() {
         try {
             File file = new File("data/pekerja.txt");
-
             if (!file.exists()) {
                 return;
             }
-
             BufferedReader reader = new BufferedReader(new FileReader(file));
-
             String line;
-
             while ((line = reader.readLine()) != null) {
-
                 String[] data = line.split(",");
-
-                if (data.length >= 7) {
-
+                if (data.length == 9) { // Deteksi PekerjaVIP
+                    PekerjaVIP pVIP = new PekerjaVIP(
+                            Integer.parseInt(data[0]), data[1], Integer.parseInt(data[2]),
+                            data[3], data[4], data[5], data[6], data[7], Double.parseDouble(data[8]));
+                    listPekerja.add(pVIP);
+                } else if (data.length >= 7) { // Deteksi Pekerja biasa
                     Pekerja p = new Pekerja(
-                            Integer.parseInt(data[0]),
-                            data[1],
-                            Integer.parseInt(data[2]),
-                            data[3],
-                            data[4],
-                            data[5],
-                            data[6]);
-
+                            Integer.parseInt(data[0]), data[1], Integer.parseInt(data[2]),
+                            data[3], data[4], data[5], data[6]);
                     listPekerja.add(p);
                 }
             }
-
             reader.close();
-
         } catch (Exception e) {
             message = "ERROR LOAD DATA : " + e.getMessage();
             e.printStackTrace();
         }
     }
+//B-E-mengganti kode privat void loadFromTxt().
 
     public int getNextId() {
         if (listPekerja.isEmpty()) {
@@ -276,36 +307,31 @@ public class PekerjaController {
         return null;
     }
 
+//B-Mengganti kode saveToTXT
     private void saveToTxt() {
-
         try {
-
             File folder = new File("data");
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-
             BufferedWriter writer = new BufferedWriter(new FileWriter("data/pekerja.txt"));
-
             for (Pekerja p : listPekerja) {
+                String baseData = p.getIdPekerja() + "," + p.getNama() + "," + p.getUmur() + "," +
+                        p.getEmail() + "," + p.getNoTelepon() + "," + p.getAlamat() + "," + p.getKeahlian();
 
-                writer.write(
-                        p.getIdPekerja() + "," +
-                                p.getNama() + "," +
-                                p.getUmur() + "," +
-                                p.getEmail() + "," +
-                                p.getNoTelepon() + "," +
-                                p.getAlamat() + "," +
-                                p.getKeahlian());
-
+                if (p instanceof PekerjaVIP) { // Cek Polimorfisme
+                    PekerjaVIP vip = (PekerjaVIP) p;
+                    writer.write(baseData + "," + vip.getTingkatVIP() + "," + vip.getBonusLayanan());
+                } else {
+                    writer.write(baseData);
+                }
                 writer.newLine();
             }
-
             writer.close();
-
         } catch (Exception e) {
             message = "ERROR SAVE : " + e.getMessage();
             e.printStackTrace();
         }
     }
+//B-E-Mengganti kode saveToTXT 
 }

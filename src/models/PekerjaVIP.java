@@ -50,9 +50,8 @@ public class PekerjaVIP extends Pekerja {
                " | Status: VIP (" + tingkatVIP + ")" + 
                " | Bonus Layanan: Rp" + bonusLayanan;
     }
-}
 
-//B-Untuk testing fitur PekerjaVIP.
+    //B-Untuk testing fitur PekerjaVIP.
     public static void main(String[] args) {
         System.out.println("=== UJI COBA FITUR PEKERJA VIP (VERSI 2.0) ===");
 
@@ -83,3 +82,5 @@ public class PekerjaVIP extends Pekerja {
             System.out.println("Error Umum: " + e.getMessage());
         }
     }
+
+}

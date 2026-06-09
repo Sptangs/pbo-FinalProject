@@ -1,1 +1,2 @@
-2,Indofood,Machine Operator,Machine Operator,Minimal Lulus smk/sma,Ponorogo,Machine,150000,300000,2026-05-25,2026-09-11
+dasd;adwadsd;dasdad;dsawd;dasdawd;dasdawd;100000;100000000;2026-06-09;Tinggi;10000;true
+asdw;sdsawd;sdawdsa;adwasd;dawdsa;adwasd;10000;11111111;2026-06-09;rendah;10000;true

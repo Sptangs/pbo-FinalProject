@@ -116,6 +116,9 @@ public class Perusahaan extends Entitas {
         if (deskripsi == null || deskripsi.trim().isEmpty()) {
             throw new IllegalArgumentException("Deskripsi tidak boleh kosong!");
         }
+        if (deskripsi.length() < 10) {
+            throw new IllegalArgumentException("Deskripsi minimal 10 karakter!");
+        }
         this.deskripsi = deskripsi;
     }
 }

@@ -1,1 +1,2 @@
-1,Indofood,Ponorogo,Indofood@gmail.com,08975651623,Makanan,Pabrik Makanan terbesar
+6,Indofood,Ponorogo,Indofood@gmail.com,08975651623,Makanan,Pabrik Makanan terbesar
+7,indobuah,Ponorogo,indobuah12@gmail.com,089615148475,Sayur,as

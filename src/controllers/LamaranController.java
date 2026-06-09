@@ -351,7 +351,7 @@ public class LamaranController {
             }
 
             application.processApplication();
-
+            saveToTxt(); 
             message = "Application successfully processed";
 
             return true;
@@ -382,7 +382,7 @@ public class LamaranController {
             }
 
             application.acceptApplication();
-
+            saveToTxt();
             message = "Application successfully accepted";
 
             return true;
@@ -422,6 +422,7 @@ public class LamaranController {
 
             application.rejectApplication(reason);
 
+            saveToTxt();
             message = "Application successfully rejected";
 
             return true;
@@ -473,6 +474,7 @@ public class LamaranController {
             application.setCoverLetter(
                     coverLetter);
 
+            saveToTxt();
             message = "Application successfully updated";
 
             return true;

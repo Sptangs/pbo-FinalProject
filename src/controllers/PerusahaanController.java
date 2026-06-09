@@ -128,6 +128,11 @@ public class PerusahaanController {
             }
         }
 
+        if (!isEmpty(deskripsi) && deskripsi.length() > 10) {
+            message = "Deskripsi maksimal 10 karakter";
+            return false;
+        }
+
         listPerusahaan.add(new Perusahaan(
                 nama, alamat, email, telepon, bidang, deskripsi
         ));

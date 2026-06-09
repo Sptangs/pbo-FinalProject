@@ -151,6 +151,7 @@ public class User {
         this.role = role;
     }
 
+
     public void displayInfo() {
 
         System.out.println("===== DATA USER =====");

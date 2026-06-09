@@ -1,18 +1,20 @@
 package controllers;
 
 import models.LowonganPekerjaan;
+import models.LowonganPrioritas;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LowonganPekerjaanController {
 
     private List<LowonganPekerjaan> lowonganList;
     private String message;
-    
 
     public LowonganPekerjaanController() {
         lowonganList = new ArrayList<>();
@@ -47,7 +49,7 @@ public class LowonganPekerjaanController {
                         tanggalTutup = LocalDate.parse(data[10]);
                         aktif = Boolean.parseBoolean(data[11]);
                     }
-                    
+
                     LowonganPekerjaan l = new LowonganPekerjaan(
                             Integer.parseInt(data[0]),
                             data[1],
@@ -73,7 +75,7 @@ public class LowonganPekerjaanController {
         }
     }
 
-    private void saveToTxt() {
+    public void saveToTxt() {
         try {
             File file = new File("data/lowongan.txt");
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -113,29 +115,9 @@ public class LowonganPekerjaanController {
 
     public List<Object[]> getLowonganDataForTable() {
         List<Object[]> dataList = new ArrayList<>();
-        
-        for (LowonganPekerjaan l : lowonganList) {
-            dataList.add(new Object[]{
-                l.getId(),
-                l.getPerusahaanNama(),
-                l.getJudul(),
-                l.getDeskripsi(),
-                l.getKualifikasi(),
-                l.getLokasi(),
-                l.getJenis(),
-                l.getGajiMin(),
-                l.getGajiMax(),
-                l.getTanggalTutup()
-            });
-        }
-        
-        return dataList;
-    }
 
-    public Object[] getLowonganById(int id) {
         for (LowonganPekerjaan l : lowonganList) {
-            if (l.getId() == id) {
-                return new Object[]{
+            dataList.add(new Object[] {
                     l.getId(),
                     l.getPerusahaanNama(),
                     l.getJudul(),
@@ -146,6 +128,26 @@ public class LowonganPekerjaanController {
                     l.getGajiMin(),
                     l.getGajiMax(),
                     l.getTanggalTutup()
+            });
+        }
+
+        return dataList;
+    }
+
+    public Object[] getLowonganById(int id) {
+        for (LowonganPekerjaan l : lowonganList) {
+            if (l.getId() == id) {
+                return new Object[] {
+                        l.getId(),
+                        l.getPerusahaanNama(),
+                        l.getJudul(),
+                        l.getDeskripsi(),
+                        l.getKualifikasi(),
+                        l.getLokasi(),
+                        l.getJenis(),
+                        l.getGajiMin(),
+                        l.getGajiMax(),
+                        l.getTanggalTutup()
                 };
             }
         }
@@ -162,14 +164,14 @@ public class LowonganPekerjaanController {
     }
 
     public boolean addLowongan(String perusahaanNama,
-                               String judul,
-                               String deskripsi,
-                               String kualifikasi,
-                               String lokasi,
-                               String jenis,
-                               String gajiMinStr,
-                               String gajiMaxStr,
-                               String tanggalTutupStr) {
+            String judul,
+            String deskripsi,
+            String kualifikasi,
+            String lokasi,
+            String jenis,
+            String gajiMinStr,
+            String gajiMaxStr,
+            String tanggalTutupStr) {
         try {
             if (perusahaanNama == null || perusahaanNama.trim().isEmpty()) {
                 message = "Nama perusahaan tidak boleh kosong!";
@@ -263,9 +265,7 @@ public class LowonganPekerjaanController {
                     jenis,
                     gajiMin,
                     gajiMax,
-                    tanggalTutup
-            );
-
+                    tanggalTutup);
 
             lowonganList.add(lowongan);
             saveToTxt();
@@ -283,13 +283,13 @@ public class LowonganPekerjaanController {
     }
 
     public boolean editLowongan(int id,
-                                String judul,
-                                String deskripsi,
-                                String kualifikasi,
-                                String lokasi,
-                                String jenis,
-                                String gajiMinStr,
-                                String gajiMaxStr) {
+            String judul,
+            String deskripsi,
+            String kualifikasi,
+            String lokasi,
+            String jenis,
+            String gajiMinStr,
+            String gajiMaxStr) {
         try {
             LowonganPekerjaan lowongan = null;
             for (LowonganPekerjaan l : lowonganList) {
@@ -405,5 +405,37 @@ public class LowonganPekerjaanController {
             message = "Terjadi kesalahan: " + e.getMessage();
             return false;
         }
+    }
+
+    public boolean addLowonganPrioritas(LowonganPrioritas lowongan) {
+        try {
+            lowonganList.add(lowongan);
+            saveToTxt();
+            message = "Lowongan prioritas berhasil ditambahkan!";
+            return true;
+        } catch (Exception e) {
+            message = "Gagal menambahkan: " + e.getMessage();
+            return false;
+        }
+    }
+
+    //Filter (Penting dan Premium)
+    public List<LowonganPekerjaan> filterPrioritasTinggi() {
+        List<LowonganPekerjaan> hasil = new ArrayList<>();
+        for (LowonganPekerjaan l : lowonganList) {
+            if (l instanceof LowonganPrioritas && ((LowonganPrioritas) l).getPrioritas() >= 2) {
+                hasil.add(l);
+            }
+        }
+        return hasil;
+    }
+
+    //filter berdasarkan prioritas (descending)
+    public void sortByPrioritas() {
+        Collections.sort(lowonganList, (a, b) -> {
+            int pA = (a instanceof LowonganPrioritas) ? ((LowonganPrioritas) a).getPrioritas() : 0;
+            int pB = (b instanceof LowonganPrioritas) ? ((LowonganPrioritas) b).getPrioritas() : 0;
+            return Integer.compare(pB, pA);
+        });
     }
 }

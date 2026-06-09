@@ -34,6 +34,40 @@ Sistem memungkinkan administrator untuk mengelola data pengguna, perusahaan, low
 
 ---
 
+## Fitur Baru yang Ditambahkan
+
+Sistem sekarang sudah mendukung **Lowongan Prioritas** untuk meningkatkan visibilitas lowongan tertentu.
+
+### Fitur yang sudah ditambahkan:
+
+- ✅ Tambah Lowongan Prioritas
+- ✅ Filter Lowongan Prioritas Tinggi
+- ✅ Level Prioritas (TINGGI / NORMAL / RENDAH)
+- ✅ Biaya Promosi Lowongan
+- ✅ Opsi "Tampil di Atas"
+- ✅ UI Panel Lowongan Prioritas (Swing)
+- ✅ Penyimpanan ke `data/lowongan.txt`
+
+---
+
+## 🧠 Controller Baru
+
+### LowonganPrioritasController
+
+Menangani:
+
+- CRUD Lowongan Prioritas
+- Filter berdasarkan level prioritas
+- Load & Save data ke file TXT
+- Validasi input lowongan
+
+---
+
+## Format Data LOWONGAN (UPDATED)
+
+```text
+Perusahaan|Judul|Deskripsi|Kualifikasi|Lokasi|Jenis|GajiMin|GajiMax|TanggalTutup|LevelPrioritas|BiayaPromosi|TampilDiAtas
+
 # 👨‍💻 Tim Pengembang
 
 | Nama | NIM | Role | GitHub |
